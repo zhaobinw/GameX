@@ -3,6 +3,8 @@ import { TableAudio } from './table-audio.js';
 const $ = selector => document.querySelector(selector);
 const colors = ['white', 'blue', 'green', 'red', 'black', 'gold'];
 const names = { white: '白', blue: '蓝', green: '绿', red: '红', black: '黑', gold: '金' };
+let match = {mode: "hotseat"}, pollTimer;
+const seatName = id => match.mode === "ai" ? (id === 0 ? "你（玩家 1）" : "AI（玩家 2）") : `玩家 ${id + 1}`;
 let catalog, state, actions = [], revision, viewer = null, selection = {}, busy = false;
 const modal = $('#modal'), handoff = $('#handoff');
 const sounds = new TableAudio(updateAudioControls);
@@ -49,7 +51,7 @@ function cardButton(id, reserved = false) {
   return `<div class="development-wrap"><button class="development ${affordable ? 'affordable' : ''}" data-card="${id}" aria-label="${reserved ? '预留：' : ''}${cardLabel(c)}" ${guide ? `aria-describedby="guide-${id}"` : ''}><img src="${c.image}" alt="${cardLabel(c)}" loading="eager"></button>${guide}</div>`;
 }
 function logText(entry) {
-  const who = `玩家 ${entry.player + 1}`;
+  const who = seatName(entry.player);
   if (entry.type === 'take') return `${who} 拿取 ${tokenText(entry.tokens)}`;
   if (entry.type === 'return') return `${who} 归还 ${tokenText(entry.tokens)}`;
   if (entry.type === 'reserve') return `${who} 预留 ${entry.card ? cardLabel(getCard(entry.card)) : `${entry.tier}级牌堆顶牌（暗牌）`}`;
@@ -60,21 +62,22 @@ function logText(entry) {
 function render() {
   const current = state.players[state.currentPlayer], returning = state.phase === 'return';
   const phaseText = { action: '选择一个行动', return: `归还 ${sum(current.tokens) - 10} 枚筹码`, noble: '选择一位来访贵族', ended: '对局结束' }[state.phase];
-  $('#table').innerHTML = `${state.phase === 'ended' ? `<section class="winner"><h2>${state.winners.map(id => `玩家 ${id + 1}`).join('、')}${state.winners.length > 1 ? ' 共同获胜' : ' 获胜'}</h2><p>分数优先；同分时已购发展卡较少者胜，再相同则共享胜利。</p><button id="export-replay">下载复盘</button></section>` : ''}
+  $('#table').innerHTML = `${match.mode === 'ai' ? `<p class="ai-banner" role="status">你 vs AI · 攻略版第 ${match.generation} 代 · ${state.phase === 'ended' ? '对局结束' : state.currentPlayer === 0 ? '轮到你了' : match.error ? 'AI 暂停：'+esc(match.error)+' <button id="retry-ai">重试</button>' : 'AI 正在思考…'}</p>` : ''}${state.phase === 'ended' ? `<section class="winner"><h2>${state.winners.map(seatName).join('、')}${state.winners.length > 1 ? ' 共同获胜' : ' 获胜'}</h2><p>分数优先；同分时已购发展卡较少者胜，再相同则共享胜利。</p><button id="export-replay">下载复盘</button></section>` : ''}
   <div class="layout"><section class="board" aria-label="公共市场">
     ${viewer === state.currentPlayer && state.phase !== 'ended' ? `<p class="market-guide-note">按玩家 ${viewer + 1} 的发展卡折扣与持有宝石计算 · 黄金可补足缺色</p>` : ''}
     <div class="nobles" aria-label="贵族">${state.nobles.map(id => { const n = getNoble(id), eligible = actions.some(a => a.type === 'noble' && a.noble === id); return `<button class="noble-card ${eligible ? 'eligible' : ''}" data-noble="${id}" aria-label="贵族，3分，要求${tokenText(n.cost)}${eligible ? '，可选择' : ''}"><img src="${n.image}" alt="贵族：${tokenText(n.cost)}"></button>`; }).join('')}</div>
     ${[2, 1, 0].map(t => `<div class="market-row"><button class="deck" data-tier="${t + 1}" aria-label="预留${t + 1}级牌堆顶牌，剩余${state.decks[t]}张" ${actions.some(a => a.type === 'reserve' && a.tier === t + 1) ? '' : 'disabled'}><strong>${['I', 'II', 'III'][t]}</strong><span>${state.decks[t]} 张</span><span>暗抽预留</span></button>${state.market[t].map(id => cardButton(id)).join('')}</div>`).join('')}
-  </section><aside class="side"><h2>${state.phase === 'ended' ? '最终牌桌' : `玩家 ${state.currentPlayer + 1} 的回合`}</h2><p class="status">${phaseText}${state.finalRound && state.phase !== 'ended' ? ' · 最后一轮' : ''}</p><h3>${returning ? '我的筹码 · 点击颜色归还' : '公共筹码池'}</h3>
-    <div class="bank">${colors.map(c => { const count = returning ? current.tokens[c] : state.bank[c]; return `<button class="gem-button ${selection[c] ? 'selected' : ''}" data-gem="${c}" aria-label="${names[c]}色筹码，可用${count}，已选${selection[c] || 0}" ${viewer === null || (!returning && (c === 'gold' || state.phase !== 'action')) || !count ? 'disabled' : ''}><img src="${catalog.tokens[c]}" alt="${names[c]}色筹码"><span>${names[c]} · ${count}</span><small>${selection[c] ? `已选 ${selection[c]}` : '　'}</small></button>`; }).join('')}</div>
+  </section><aside class="side"><h2>${state.phase === 'ended' ? '最终牌桌' : `${seatName(state.currentPlayer)} 的回合`}</h2><p class="status">${phaseText}${state.finalRound && state.phase !== 'ended' ? ' · 最后一轮' : ''}</p><h3>${returning ? '我的筹码 · 点击颜色归还' : '公共筹码池'}</h3>
+    <div class="bank">${colors.map(c => { const count = returning ? current.tokens[c] : state.bank[c]; return `<button class="gem-button ${selection[c] ? 'selected' : ''}" data-gem="${c}" aria-label="${names[c]}色筹码，可用${count}，已选${selection[c] || 0}" ${viewer !== state.currentPlayer || (!returning && (c === 'gold' || state.phase !== 'action')) || !count ? 'disabled' : ''}><img src="${catalog.tokens[c]}" alt="${names[c]}色筹码"><span>${names[c]} · ${count}</span><small>${selection[c] ? `已选 ${selection[c]}` : '　'}</small></button>`; }).join('')}</div>
     <p class="hint">${returning ? `现在持有 ${sum(current.tokens)} 枚，超过上限 ${sum(current.tokens) - 10} 枚。点击上方想归还的颜色，再确认归还；原有或刚拿到的筹码都可以归还。` : '拿 3 色各 1 枚，或从至少 4 枚的一色中拿 2 枚。黄金通过预留获得。'}</p>
     <p class="hint" aria-live="polite">已选 ${sum(selection)} 枚${returning ? ` / 须归还 ${sum(current.tokens) - 10} 枚` : ''}。再次点击可调整数量。</p>
     ${returning ? `<div class="token-line">牌池 ${chips(state.bank)}</div>` : ''}
     <div class="actions"><button id="confirm-tokens" class="primary" ${matchingSelection() ? '' : 'disabled'}>${returning ? '确认归还筹码' : '拿取筹码'}</button><button id="clear-tokens">清空选择</button></div>${pendingTake ? '<button id="cancel-take" class="cancel-take">取消本次拿取，改选行动</button>' : ''}
     <p class="hint">${state.phase === 'noble' ? '点击上方高亮的贵族。一次回合只能获得一位。' : '点击发展卡购买或预留；点击左侧牌堆可暗抽预留。'}</p><p class="hint">持有 ${sum(current.tokens)} / 10 枚 · 预留 ${current.reserved.length} / 3 张</p>
   </aside></div>
-  <section class="players" style="--players:${state.players.length}" aria-label="玩家区域">${state.players.map(p => `<article class="player ${p.id === state.currentPlayer ? 'active' : ''}"><div class="player-head"><strong>玩家 ${p.id + 1}${p.id === state.firstPlayer ? ' · 先手' : ''}</strong><span class="points">${p.score} 分</span></div>${playerTokenSummary(p)}<div class="token-line">筹码 ${chips(p.tokens)}</div><div class="token-line">折扣 ${chips(p.bonuses)}</div><button data-player="${p.id}">已购 ${p.purchased.length} 张 · 贵族 ${p.nobles.length} 位</button><div class="owned-nobles" aria-label="玩家 ${p.id + 1} 已获得的贵族">${p.nobles.length ? `<span class="owned-nobles-label">已获贵族 · ${p.nobles.length * 3} 分</span>${p.nobles.map(id => `<button class="noble-card" data-noble="${id}" aria-label="玩家 ${p.id + 1} 已获贵族，3分，要求${tokenText(getNoble(id).cost)}"><img src="${getNoble(id).image}" alt="已获贵族：${tokenText(getNoble(id).cost)}"></button>`).join('')}` : ''}</div><div class="reserve-row">${p.reserved.map(id => id ? cardButton(id, true) : '<div class="hidden-card">预留暗牌</div>').join('')}</div></article>`).join('')}</section>
+  <section class="players" style="--players:${state.players.length}" aria-label="玩家区域">${state.players.map(p => `<article class="player ${p.id === state.currentPlayer ? 'active' : ''}"><div class="player-head"><strong>${seatName(p.id)}${p.id === state.firstPlayer ? ' · 先手' : ''}</strong><span class="points">${p.score} 分</span></div>${playerTokenSummary(p)}<div class="token-line">筹码 ${chips(p.tokens)}</div><div class="token-line">折扣 ${chips(p.bonuses)}</div><button data-player="${p.id}">已购 ${p.purchased.length} 张 · 贵族 ${p.nobles.length} 位</button><div class="owned-nobles" aria-label="玩家 ${p.id + 1} 已获得的贵族">${p.nobles.length ? `<span class="owned-nobles-label">已获贵族 · ${p.nobles.length * 3} 分</span>${p.nobles.map(id => `<button class="noble-card" data-noble="${id}" aria-label="玩家 ${p.id + 1} 已获贵族，3分，要求${tokenText(getNoble(id).cost)}"><img src="${getNoble(id).image}" alt="已获贵族：${tokenText(getNoble(id).cost)}"></button>`).join('')}` : ''}</div><div class="reserve-row">${p.reserved.map(id => id ? cardButton(id, true) : '<div class="hidden-card">预留暗牌</div>').join('')}</div></article>`).join('')}</section>
   <details class="history"><summary>对局记录 · 已完成 ${Math.min(...state.players.map(p => p.turns))} 轮</summary><ol>${state.log.map(logText).filter(Boolean).map(text => `<li>${esc(text)}</li>`).join('')}</ol></details>`;
+  if ($('#retry-ai')) $('#retry-ai').onclick = async () => { try { await request('/api/ai/retry', {revision}); await refresh(); } catch(e) { error(e.message); } };
   document.querySelectorAll('[data-card]').forEach(el => el.onclick = () => showCard(el.dataset.card));
   document.querySelectorAll('[data-tier]').forEach(el => el.onclick = () => reserveDeck(Number(el.dataset.tier)));
   document.querySelectorAll('[data-noble]').forEach(el => el.onclick = () => showNoble(el.dataset.noble));
@@ -98,15 +101,24 @@ function matchingSelection() {
 }
 async function refresh() {
   const result = await request('/api/state' + (viewer === null ? '' : `?viewer=${viewer}`));
+  clearTimeout(pollTimer);
+  match = result.match || {mode:"hotseat"};
+  if (match.mode === "ai") { viewer = 0; if (handoff.open) handoff.close(); }
   pendingTake = null;
+  const previous = state;
   state = result.state; actions = result.actions; revision = result.revision;
-  if (state.phase !== 'ended' && viewer !== state.currentPlayer) {
+  if (match.mode !== 'ai' && state.phase !== 'ended' && viewer !== state.currentPlayer) {
     viewer = null; actions = [];
     state.players.forEach(p => { p.reserved = p.reserved.map(() => null); });
     $('#handoff-title').textContent = `轮到玩家 ${state.currentPlayer + 1}`;
     if (!handoff.open) handoff.showModal();
   }
   render();
+  if (match.mode === 'ai' && previous && !busy) for (const entry of state.log.slice(previous.log.length)) {
+    if (entry.player === 1 && entry.type !== 'visit') sounds.action(entry);
+  }
+  if (match.mode === 'ai' && state.currentPlayer === 1 && state.phase !== 'ended' && !match.error)
+    pollTimer = setTimeout(() => refresh().catch(e => error(e.message)), 500);
 }
 let pendingTake = null;
 function stageTake(action) {
@@ -186,6 +198,14 @@ function showPlayer(id) {
 $('#close-modal').onclick = () => modal.close();
 handoff.addEventListener('cancel', e => e.preventDefault());
 $('#ready').onclick = async () => { viewer = state.currentPlayer; handoff.close(); try { await refresh(); } catch (e) { error(e.message); } };
+$('#ai-button').onclick = () => {
+  openModal('<h2>与 AI 对战</h2><p>经典基础版双人局，你是玩家 1，AI 是玩家 2。开始后替换当前对局。</p><label>先手<select id="ai-first"><option value="0">我先手</option><option value="1">AI 先手</option></select></label><button id="start-ai" class="primary">开始与 AI 对战</button>');
+  $('#start-ai').onclick = async () => {
+    const button = $('#start-ai'); button.disabled = true; button.textContent = '正在加载模型…';
+    try { await request('/api/new', {mode:'ai', players:2, firstPlayer:Number($('#ai-first').value), revision}); viewer=0; selection={}; modal.close(); await refresh(); sounds.action({type:'new'}); }
+    catch(e) { error(e.message); button.disabled=false; button.textContent='重新开始'; }
+  };
+};
 $('#new-button').onclick = () => {
   openModal('<h2>新对局</h2><p>按顺时针安排座位，选择最年轻玩家作为先手。开始后将替换当前本地对局。</p><label>人数<select id="player-count"><option>2</option><option>3</option><option>4</option></select></label><label>先手<select id="first-player"><option value="0">玩家 1</option><option value="1">玩家 2</option></select></label><button id="start-new" class="primary">开始新对局</button>');
   $('#player-count').onchange = () => { $('#first-player').innerHTML = Array.from({ length: Number($('#player-count').value) }, (_, i) => `<option value="${i}">玩家 ${i + 1}</option>`).join(''); };

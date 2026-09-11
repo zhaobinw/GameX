@@ -677,3 +677,6 @@ label select {
 .player .owned-nobles .noble-card { width:58px; padding:0; }
 
 .lab-link { display:inline-flex; align-items:center; padding:9px 12px; border:1px solid #78928c; border-radius:6px; text-decoration:none; white-space:nowrap; }
+
+.ai-banner { padding: 10px 16px; border: 1px solid #cbb477; border-radius: 8px; background: #153b3d; color: #f5dfa7; }
+header nav { flex-wrap: wrap; }

@@ -5,9 +5,22 @@ import path from 'node:path';
 import { randomBytes } from 'node:crypto';
 import { createGame, step, observe, legalActions, DATA, replayRecord } from './engine.js';
 
+import { prepareAI, selectAI } from './ai.js';
+
 const root = path.resolve(fileURLToPath(new URL('../web/', import.meta.url)));
 let state = createGame({ seed: randomBytes(16).toString('hex') });
 let revision = 0;
+let match = {mode:'hotseat'}, aiRunning = false, aiError = null;
+async function runAI() {
+  if (aiRunning || match.mode !== 'ai' || state.currentPlayer !== 1 || state.phase === 'ended') return;
+  aiRunning = true; aiError = null;
+  const ticket = revision;
+  try {
+    const action = await selectAI(observe(state, 1), legalActions(state));
+    if (revision === ticket && match.mode === 'ai') { state = step(state, action, 1); revision++; }
+  } catch (error) { if (revision === ticket) aiError = error.message; }
+  finally { aiRunning = false; if (!aiError) setTimeout(runAI, 400); }
+}
 let port = Number(process.env.PORT || 4173);
 const origin = () => `http://127.0.0.1:${port}`;
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.svg': 'image/svg+xml', '.wav': 'audio/wav' };
@@ -26,23 +39,32 @@ const server = http.createServer(async (req, res) => {
     if (![`127.0.0.1:${port}`, `localhost:${port}`].includes(req.headers.host)) return json(res, 403, { error: '仅供本机使用' });
     const url = new URL(req.url, origin());
     if (req.method === 'GET' && url.pathname === '/api/state') {
-      const viewer = url.searchParams.has('viewer') ? Number(url.searchParams.get('viewer')) : null;
-      return json(res, 200, { state: observe(state, viewer), actions: viewer === state.currentPlayer ? legalActions(state) : [], revision });
+      const viewer = match.mode === 'ai' ? 0 : url.searchParams.has('viewer') ? Number(url.searchParams.get('viewer')) : null;
+      return json(res, 200, { state: observe(state, viewer), actions: viewer === state.currentPlayer ? legalActions(state) : [], revision, match: {...match, thinking: aiRunning, error: aiError} });
     }
     if (req.method === 'GET' && url.pathname === '/api/catalog') return json(res, 200, DATA);
     if (req.method === 'GET' && url.pathname === '/api/replay') {
       if (state.phase !== 'ended') return json(res, 409, { error: '为保护暗牌，完整复盘仅在对局结束后导出' });
       return json(res, 200, replayRecord(state));
     }
-    if (req.method === 'POST' && ['/api/new', '/api/move'].includes(url.pathname)) {
+    if (req.method === 'POST' && ['/api/new', '/api/move', '/api/ai/retry'].includes(url.pathname)) {
       const requestOrigin = req.headers.origin;
       if (requestOrigin && ![origin(), `http://localhost:${port}`].includes(requestOrigin)) return json(res, 403, { error: '来源不匹配' });
       if (!req.headers['content-type']?.startsWith('application/json')) return json(res, 415, { error: '需要 JSON 请求' });
       const payload = await body(req);
       if (payload.revision !== revision) return json(res, 409, { error: '棋局已变化，请刷新后重试' });
-      if (url.pathname === '/api/new') state = createGame({ players: payload.players, firstPlayer: payload.firstPlayer, seed: randomBytes(16).toString('hex') });
-      else state = step(state, payload.action, payload.player);
+      if (url.pathname === '/api/new') {
+        const next = createGame({ players: payload.mode === 'ai' ? 2 : payload.players, firstPlayer: payload.firstPlayer, seed: randomBytes(16).toString('hex') });
+        const info = payload.mode === 'ai' ? await prepareAI() : null;
+        if (payload.revision !== revision) return json(res, 409, {error:'棋局已变化，请重试'});
+        state = next; match = info ? {mode:'ai', humanSeat:0, aiSeat:1, generation:info.generation} : {mode:'hotseat'};
+        aiError = null;
+      } else if (url.pathname === '/api/move') {
+        if (match.mode === 'ai' && payload.player !== 0) return json(res, 403, {error:'AI 的回合由模型自动执行'});
+        state = step(state, payload.action, payload.player);
+      } else aiError = null;
       revision++;
+      setTimeout(runAI, 400);
       return json(res, 200, { revision });
     }
     if (req.method !== 'GET') return json(res, 405, { error: '不支持的请求' });
