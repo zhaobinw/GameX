@@ -1,4 +1,5 @@
 import { card, noble, COLORS, TOKENS } from '../../games/splendor/src/engine.js';
+import {knowledge as strategyKnowledge} from './knowledge.mjs';
 export const SCHEMA = 1;
 const sum = x => Object.values(x).reduce((a,b)=>a+b,0);
 const one = (values, x) => values.map(v=>+(v===x));
@@ -7,7 +8,7 @@ const cardFeatures = id => {
   return c ? [1,...one(COLORS,c.bonus),...COLORS.map(k=>(c.cost[k]||0)/7),c.points/5,c.tier/3] : Array(13).fill(0);
 };
 // Only accepts an engine observation, never the privileged engine state.
-export function encode(observation, actions) {
+export function encode(observation, actions, knowledge = false) {
   const o=observation, seat=o.currentPlayer, me=o.players[seat];
   const s=[...one(['action','return','noble'],o.phase),+o.finalRound,o.players.length/4,...TOKENS.map(c=>o.bank[c]/7),...o.decks.map(n=>n/40)];
   for(let i=0;i<4;i++) {
@@ -35,5 +36,6 @@ export function encode(observation, actions) {
   // Fixed, disclosed opening prior makes long sparse-reward games collectable.
   // It is a residual prior, never a hard filter: every legal action remains selectable.
   const prior=actions.map(a=>a.type==='buy'?2.5+(card(a.card).points*.35)-(sum(a.payment)*.03):a.type==='reserve'?-.8:0);
+  if(knowledge){const k=strategyKnowledge(o,actions);return {state:[...s,...k.context],actions:a.map((x,i)=>[...x,...k.features[i]]),prior:actions.map(()=>0),teacher:k.teacher};}
   return {state:s,actions:a,prior};
 }

@@ -43,4 +43,25 @@ class TrainingTests(unittest.TestCase):
    frames=e.call([dict(env=0,op='frames',record=r)])[0]['frames']
    self.assertEqual(frames[-1]['phase'],'ended')
    self.assertTrue(all(id is None for f in frames for p in f['players'] for id in p['reserved']))
+ def test_knowledge_distillation_and_inference(self):
+  from train import distill,greedy
+  with Environments(2,True) as e:
+   item=e.call([dict(env=0,op='reset',setup=dict(seed='knowledge-test'))])[0]
+   model=Policy(len(item['state']),len(item['actions'][0]));opt=torch.optim.Adam(model.parameters(),lr=.001)
+   demos,games,_,_=collect(e,model,[],4,2,117,500,demonstrate=True)
+   self.assertTrue(all(g['completed'] for g in games));before=copy.deepcopy(model.state_dict())
+   result=distill(model,opt,demos,epochs=2);self.assertGreater(result['samples'],0)
+   self.assertTrue(any(not torch.equal(before[k],model.state_dict()[k]) for k in before))
+   samples,_,_,_=collect(e,model,[copy.deepcopy(model)],2,2,118,500,gae_lambda=.95)
+   self.assertTrue(all('advantage' in x for x in samples));update_ppo(model,opt,samples,random.Random(1),teacher_weight=.1,epochs=1)
+   # Baseline must not change when the learned model's residual prior changes.
+   base=copy.deepcopy(item);base['prior']=[100-i for i in range(len(base['prior']))]
+   self.assertEqual(greedy(item,random.Random(2)),greedy(base,random.Random(2)))
+ def test_worker_count_does_not_change_eval_randomness(self):
+  with Environments(1) as e:
+   item=e.call([dict(env=0,op='reset',setup=dict(seed='worker-count'))])[0]
+   model=Policy(len(item['state']),len(item['actions'][0]))
+   _,one,_,_=collect(e,model,[model],4,2,109,600,train=False)
+  with Environments(4) as e:_,four,_,_=collect(e,model,[model],4,2,109,600,train=False)
+  self.assertEqual(sorted(one,key=lambda x:x['game']),sorted(four,key=lambda x:x['game']))
 if __name__=='__main__':unittest.main()

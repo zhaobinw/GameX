@@ -29,7 +29,7 @@ class Handler(BaseHTTPRequestHandler):
             values=[]
             for folder in sorted(RUNS.glob('*'),key=lambda p:p.stat().st_mtime,reverse=True):
                 if folder.is_dir() and (folder/'status.json').exists():
-                    s=read(folder/'status.json',{});values.append(dict(name=folder.name,status=s.get('status'),update=s.get('update',0)))
+                    s=read(folder/'status.json',{});c=s.get('config',{});values.append(dict(name=folder.name,status=s.get('status'),update=s.get('update',0),knowledge=c.get('knowledge',False),pretrained=c.get('pretrained',bool(c.get('distillation')))))
             return self.json(values)
         if url.path in ['/api/status','/api/replays','/api/replay']:
             folder=safe_run(q.get('run',[''])[0])
@@ -69,6 +69,7 @@ class Handler(BaseHTTPRequestHandler):
             if not (1<=workers<=16 and 1<=updates<=1000 and players in (2,3,4) and 2<=episodes<=128):raise ValueError('训练配置超出范围')
             name=time.strftime('%Y%m%d-%H%M%S')+f'-{time.time_ns()%100000:05d}';folder=safe_run(name);folder.mkdir(parents=True)
             command=[sys.executable,str(ROOT/'train.py'),'--run',str(folder),'--workers',str(workers),'--updates',str(updates),'--players',str(players),'--episodes',str(episodes)]
+            if data.get('knowledge',True):command+=['--knowledge']
             if data.get('resume'):
                 previous=safe_run(data['resume'])/'latest.pt'
                 if not previous.is_file():raise ValueError('该记录还没有可续训的模型')

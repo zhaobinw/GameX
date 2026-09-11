@@ -26,9 +26,13 @@ def batch(items, device='cpu'):
     return tuple(torch.as_tensor(x,device=device) for x in (np.asarray([x['state'] for x in items],np.float32),a,mask,prior))
 
 @torch.no_grad()
-def choose(model, items, generator=None, deterministic=False):
+def choose(model, items, generator=None, deterministic=False, uniforms=None):
     logits,values=model(*batch(items,next(model.parameters()).device))
     probs=logits.softmax(-1)
-    selected=logits.argmax(-1) if deterministic else torch.multinomial(probs,1,generator=generator).squeeze(-1)
+    if deterministic:selected=logits.argmax(-1)
+    elif uniforms is not None:
+        selected=(probs.cumsum(-1)<torch.tensor(uniforms,device=probs.device)[:,None]).sum(-1)
+        selected=torch.minimum(selected,torch.tensor([len(x['actions'])-1 for x in items],device=probs.device))
+    else:selected=torch.multinomial(probs,1,generator=generator).squeeze(-1)
     logp=logits.log_softmax(-1).gather(1,selected[:,None]).squeeze(-1)
     return selected.cpu().tolist(),logp.cpu().tolist(),values.cpu().tolist()

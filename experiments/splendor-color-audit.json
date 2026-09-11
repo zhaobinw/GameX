@@ -1,0 +1,51 @@
+{
+  "cycle": [
+    "white",
+    "blue",
+    "green",
+    "red",
+    "black"
+  ],
+  "tiers": [
+    {
+      "tier": 1,
+      "count": 40,
+      "rotationMatches": 25,
+      "patterns": {
+        "3": 5,
+        "4": 5,
+        "21": 5,
+        "22": 5,
+        "221": 5,
+        "311": 5,
+        "1111": 5,
+        "2111": 5
+      }
+    },
+    {
+      "tier": 2,
+      "count": 30,
+      "rotationMatches": 19,
+      "patterns": {
+        "5": 5,
+        "6": 5,
+        "53": 5,
+        "322": 5,
+        "332": 5,
+        "421": 5
+      }
+    },
+    {
+      "tier": 3,
+      "count": 20,
+      "rotationMatches": 20,
+      "patterns": {
+        "7": 5,
+        "73": 5,
+        "633": 5,
+        "5333": 5
+      }
+    }
+  ],
+  "conclusion": "The full 90-card game is not invariant under cyclic color relabeling. No such augmentation is used."
+}

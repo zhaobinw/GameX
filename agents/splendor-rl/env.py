@@ -4,9 +4,9 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parent
 class Environments:
-    def __init__(self, count):
-        self.count=count
-        self.process=subprocess.Popen(['node',str(ROOT/'env.mjs'),str(count)],stdin=subprocess.PIPE,stdout=subprocess.PIPE,text=True,bufsize=1)
+    def __init__(self, count, knowledge=False):
+        self.count=count;self.knowledge=knowledge
+        self.process=subprocess.Popen(['node',str(ROOT/'env.mjs'),str(count),'knowledge' if knowledge else 'legacy'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,text=True,bufsize=1)
     def call(self, commands):
         self.process.stdin.write(json.dumps(commands,separators=(',',':'))+'\n');self.process.stdin.flush()
         line=self.process.stdout.readline()

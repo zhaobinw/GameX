@@ -1,0 +1,702 @@
+{
+  "date": "2026-09-12",
+  "seed": 881171,
+  "games_per_condition": 400,
+  "comparisons": {
+    "learned_vs_legacy": {
+      "pairs": 197,
+      "difference": 0.3197969543147208,
+      "ci95": [
+        0.2512690355329949,
+        0.38578680203045684
+      ]
+    },
+    "learned_vs_pretrained": {
+      "pairs": 195,
+      "difference": 0.038461538461538464,
+      "ci95": [
+        -0.03076923076923077,
+        0.10512820512820513
+      ]
+    },
+    "deterministic_learned_vs_legacy": {
+      "pairs": 198,
+      "difference": 0.41792929292929293,
+      "ci95": [
+        0.3560606060606061,
+        0.47853535353535354
+      ]
+    },
+    "pretrained_vs_ablation": {
+      "pairs": 196,
+      "difference": 0.3979591836734694,
+      "ci95": [
+        0.3417729591836735,
+        0.45408163265306123
+      ]
+    }
+  },
+  "results": {
+    "legacy": {
+      "games": 400,
+      "completed": 400,
+      "truncated": 0,
+      "win_share": 0.3475,
+      "mean_utility": -0.305,
+      "mean_decisions": 61.8725
+    },
+    "ablation": {
+      "games": 400,
+      "completed": 398,
+      "truncated": 2,
+      "win_share": 0.2236180904522613,
+      "mean_utility": -0.5527638190954773,
+      "mean_decisions": 62.855
+    },
+    "pretrained": {
+      "games": 400,
+      "completed": 398,
+      "truncated": 2,
+      "win_share": 0.6231155778894473,
+      "mean_utility": 0.24623115577889448,
+      "mean_decisions": 61.16
+    },
+    "learned": {
+      "games": 400,
+      "completed": 397,
+      "truncated": 3,
+      "win_share": 0.6599496221662469,
+      "mean_utility": 0.3198992443324937,
+      "mean_decisions": 61.0975
+    },
+    "teacher": {
+      "games": 400,
+      "completed": 400,
+      "truncated": 0,
+      "win_share": 0.86,
+      "mean_utility": 0.72,
+      "mean_decisions": 57.315
+    },
+    "legacy-deterministic": {
+      "games": 400,
+      "completed": 398,
+      "truncated": 2,
+      "win_share": 0.4007537688442211,
+      "mean_utility": -0.1984924623115578,
+      "mean_decisions": 62.6175
+    },
+    "learned-deterministic": {
+      "games": 400,
+      "completed": 400,
+      "truncated": 0,
+      "win_share": 0.8175,
+      "mean_utility": 0.635,
+      "mean_decisions": 58.295
+    },
+    "vs-teacher": {
+      "games": 400,
+      "completed": 400,
+      "truncated": 0,
+      "win_share": 0.48375,
+      "mean_utility": -0.0325,
+      "mean_decisions": 58.4575
+    }
+  },
+  "config": {
+    "run": "agents/splendor-rl/runs/knowledge-v2-dev",
+    "updates": 12,
+    "episodes": 32,
+    "workers": 4,
+    "players": 2,
+    "budget": 800,
+    "eval_games": 20,
+    "knowledge": true,
+    "warmup_episodes": 64,
+    "deterministic": false,
+    "opponent": "greedy",
+    "seed": 20260912,
+    "resume": null,
+    "evaluate": null,
+    "eval_seed": 908172,
+    "schema": 1,
+    "algorithm": "knowledge distillation + historical PPO / per-seat GAE",
+    "gae_lambda": 0.95,
+    "gamma": 1.0,
+    "clip": 0.2,
+    "entropy": 0.01,
+    "learning_rate": 0.0003,
+    "python": "3.12.12",
+    "torch": "2.14.0",
+    "numpy": "2.5.3",
+    "device": "cpu",
+    "platform": "macOS-15.6.1-arm64-arm-64bit",
+    "data_hash": "202dcd6648f52373f924e8b761b9b6646306270f46cae1bbc2ffdc9f9583efe3",
+    "git_commit": "c2b5bc87f21698772787f92fa8715510841fc566",
+    "source_hashes": {
+      "env.mjs": "fd4b48497dec9a28f4c0f7634281f6cd0801b7df860e8873cbf1b60f41766296",
+      "env.py": "20fe2e1e83613433031ec6abb1e617d4fcf849e353c132236d314793701e0a54",
+      "features.mjs": "0d0e751088547b28f300304fe32eda708431bcc3e694ba309cbc4e705f61d689",
+      "knowledge.mjs": "38c81d7f547b125d66ec2e7f8478cb050ccff57c70452ad46df5c64cc811689c",
+      "model.py": "8dfbb043ad8285d26d6a65e0856c43538a27110ec65e063e7fb552a7b41a824b",
+      "server.py": "d8be58c875fe8aeff0707dc00d185f0ed5a108fb7c49ae2e7f7c78d58f328522",
+      "test_server.py": "f8c34f49fe12f2cc0aef80785867a88be21a76c84b2da0749fc6f4a9820e70c7",
+      "test_training.py": "a5fbcbda67e577d0534310762b07c0d9174779022c6a25eec2b9433464a55933",
+      "tests.mjs": "ceb00b4dcbcbc9660502552a28465b09d4bef433e328e1d7f49714c47b135700",
+      "train.py": "ca540a9db764cf7115756e950a7204b5dfbd6481c11d3ed9f9ce17956f0f7881"
+    },
+    "distillation": {
+      "samples": 3735,
+      "epochs": 30,
+      "loss": 1.5827781081199646
+    },
+    "parameters": 98178,
+    "model": {
+      "state_dim": 433,
+      "action_dim": 73,
+      "hidden": 128
+    }
+  },
+  "model_sha256": "37ead5e2749234f4c7cd9db876ae6e9533c20b86caa685980e5d6286b5458ebb",
+  "metrics": [
+    {
+      "update": 1,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1412,
+      "decisions": 2032,
+      "collection_seconds": 1.2966934579890221,
+      "decisions_per_second": 1567.0627375195743,
+      "parameter_delta": 1.7041622400283813,
+      "evaluation": {
+        "greedy": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 64.65
+        },
+        "initial": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.575,
+          "mean_utility": 0.15,
+          "mean_decisions": 63.5
+        },
+        "teacher": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 61.9
+        }
+      },
+      "loss": 0.19726063093791404,
+      "teacher_loss": 1.4437510557472706,
+      "policy_loss": -0.04941241693450138,
+      "value_loss": 0.2424386857698361,
+      "entropy": 1.6062584954003494,
+      "kl": 0.00616178622280709,
+      "clip_fraction": 0.07242838541666667,
+      "gradient_norm": 0.8288085709015528
+    },
+    {
+      "update": 2,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1309,
+      "decisions": 1935,
+      "collection_seconds": 1.0600297087803483,
+      "decisions_per_second": 1825.4205367756883,
+      "parameter_delta": 1.3873194456100464,
+      "evaluation": {
+        "greedy": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.8,
+          "mean_utility": 0.6,
+          "mean_decisions": 61.95
+        },
+        "initial": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.55,
+          "mean_utility": 0.1,
+          "mean_decisions": 63.9
+        },
+        "teacher": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.35,
+          "mean_utility": -0.3,
+          "mean_decisions": 59.4
+        }
+      },
+      "loss": 0.24872565946795724,
+      "teacher_loss": 1.5899746011603961,
+      "policy_loss": -0.006739688994870944,
+      "value_loss": 0.24046299945224414,
+      "entropy": 1.7529237568378448,
+      "kl": 0.005706721477963583,
+      "clip_fraction": 0.07296972967345607,
+      "gradient_norm": 0.8694174086505716
+    },
+    {
+      "update": 3,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1137,
+      "decisions": 1966,
+      "collection_seconds": 1.0496042920276523,
+      "decisions_per_second": 1873.086852762417,
+      "parameter_delta": 1.213283896446228,
+      "evaluation": {
+        "greedy": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 62.8
+        },
+        "initial": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.4,
+          "mean_utility": -0.2,
+          "mean_decisions": 65.55
+        },
+        "teacher": {
+          "games": 20,
+          "completed": 19,
+          "truncated": 1,
+          "win_share": 0.3157894736842105,
+          "mean_utility": -0.3684210526315789,
+          "mean_decisions": 61.45
+        }
+      },
+      "loss": 0.23752337363031176,
+      "teacher_loss": 1.5306075380908117,
+      "policy_loss": -0.006153592555266287,
+      "value_loss": 0.23298778550492394,
+      "entropy": 1.6964124805397458,
+      "kl": 0.00494977829314141,
+      "clip_fraction": 0.05491411644551489,
+      "gradient_norm": 0.778661944799953
+    },
+    {
+      "update": 4,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1317,
+      "decisions": 1966,
+      "collection_seconds": 1.1111592091619968,
+      "decisions_per_second": 1769.3234090933724,
+      "parameter_delta": 1.2456613779067993,
+      "evaluation": {
+        "greedy": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 63.9
+        },
+        "initial": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.525,
+          "mean_utility": 0.05,
+          "mean_decisions": 64.5
+        },
+        "teacher": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.3,
+          "mean_utility": -0.4,
+          "mean_decisions": 61.3
+        }
+      },
+      "loss": 0.2266241701489145,
+      "teacher_loss": 1.5717177499424329,
+      "policy_loss": -0.007861449986442247,
+      "value_loss": 0.21357062475925143,
+      "entropy": 1.7387527146122672,
+      "kl": 0.004152715682649118,
+      "clip_fraction": 0.05211532564664429,
+      "gradient_norm": 0.763388613408262
+    },
+    {
+      "update": 5,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1320,
+      "decisions": 2002,
+      "collection_seconds": 1.0192563747987151,
+      "decisions_per_second": 1964.1770701658443,
+      "parameter_delta": 1.3572998046875,
+      "evaluation": {
+        "greedy": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.6,
+          "mean_utility": 0.2,
+          "mean_decisions": 62.2
+        },
+        "initial": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.3,
+          "mean_utility": -0.4,
+          "mean_decisions": 63.85
+        },
+        "teacher": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.2,
+          "mean_utility": -0.6,
+          "mean_decisions": 63.25
+        }
+      },
+      "loss": 0.24167740463533186,
+      "teacher_loss": 1.5562779551202601,
+      "policy_loss": -0.00585909200493585,
+      "value_loss": 0.2477328177880157,
+      "entropy": 1.714776329018853,
+      "kl": 0.0041134908666449095,
+      "clip_fraction": 0.05188210236585953,
+      "gradient_norm": 0.7027886868877844
+    },
+    {
+      "update": 6,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1238,
+      "decisions": 1941,
+      "collection_seconds": 1.0608856249600649,
+      "decisions_per_second": 1829.60345048795,
+      "parameter_delta": 1.0874037742614746,
+      "evaluation": {
+        "greedy": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.65,
+          "mean_utility": 0.3,
+          "mean_decisions": 63.2
+        },
+        "initial": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.6,
+          "mean_utility": 0.2,
+          "mean_decisions": 65.35
+        },
+        "teacher": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.325,
+          "mean_utility": -0.35,
+          "mean_decisions": 61.3
+        }
+      },
+      "loss": 0.2600045070052147,
+      "teacher_loss": 1.6028686553239821,
+      "policy_loss": -0.007575643283780664,
+      "value_loss": 0.28630861453711987,
+      "entropy": 1.7735858410596848,
+      "kl": 0.004450098364486621,
+      "clip_fraction": 0.0608784522395581,
+      "gradient_norm": 0.8682242169976234
+    },
+    {
+      "update": 7,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1397,
+      "decisions": 1985,
+      "collection_seconds": 1.0931593340355903,
+      "decisions_per_second": 1815.837763258191,
+      "parameter_delta": 1.0511317253112793,
+      "evaluation": {
+        "greedy": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.65,
+          "mean_utility": 0.3,
+          "mean_decisions": 63.6
+        },
+        "initial": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.4,
+          "mean_utility": -0.2,
+          "mean_decisions": 62.8
+        },
+        "teacher": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.35,
+          "mean_utility": -0.3,
+          "mean_decisions": 60.5
+        }
+      },
+      "loss": 0.22337835671549494,
+      "teacher_loss": 1.5347570370544086,
+      "policy_loss": -0.006546921668235551,
+      "value_loss": 0.2269036966291341,
+      "entropy": 1.6951941793615168,
+      "kl": 0.003225723691052451,
+      "clip_fraction": 0.036538765151900326,
+      "gradient_norm": 0.6699257547205145
+    },
+    {
+      "update": 8,
+      "episodes": 32,
+      "completed": 31,
+      "truncated": 1,
+      "samples": 1142,
+      "decisions": 1917,
+      "collection_seconds": 1.111324000172317,
+      "decisions_per_second": 1724.96949557713,
+      "parameter_delta": 0.9990755915641785,
+      "evaluation": {
+        "greedy": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.8,
+          "mean_utility": 0.6,
+          "mean_decisions": 63.45
+        },
+        "initial": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.475,
+          "mean_utility": -0.05,
+          "mean_decisions": 66.25
+        },
+        "teacher": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.35,
+          "mean_utility": -0.3,
+          "mean_decisions": 63.35
+        }
+      },
+      "loss": 0.2102317429251141,
+      "teacher_loss": 1.6005707846747503,
+      "policy_loss": -0.00896538284400271,
+      "value_loss": 0.20038347360160616,
+      "entropy": 1.7386251555548773,
+      "kl": 0.004360942076402807,
+      "clip_fraction": 0.05306909140199423,
+      "gradient_norm": 0.6054988420671887
+    },
+    {
+      "update": 9,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1308,
+      "decisions": 1982,
+      "collection_seconds": 1.0431742921937257,
+      "decisions_per_second": 1899.9701342639366,
+      "parameter_delta": 1.1528916358947754,
+      "evaluation": {
+        "greedy": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 61.6
+        },
+        "initial": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.45,
+          "mean_utility": -0.1,
+          "mean_decisions": 65.3
+        },
+        "teacher": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.3,
+          "mean_utility": -0.4,
+          "mean_decisions": 62.15
+        }
+      },
+      "loss": 0.2065932225774635,
+      "teacher_loss": 1.4991881115870043,
+      "policy_loss": -0.016429505628448995,
+      "value_loss": 0.22847053713419221,
+      "entropy": 1.6435258794914593,
+      "kl": 0.0034169796364163963,
+      "clip_fraction": 0.0408127031035044,
+      "gradient_norm": 0.776012625883926
+    },
+    {
+      "update": 10,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1270,
+      "decisions": 1949,
+      "collection_seconds": 1.0271845841780305,
+      "decisions_per_second": 1897.4194414722656,
+      "parameter_delta": 1.1397550106048584,
+      "evaluation": {
+        "greedy": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.85,
+          "mean_utility": 0.7,
+          "mean_decisions": 59.7
+        },
+        "initial": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.5,
+          "mean_utility": 0.0,
+          "mean_decisions": 66.2
+        },
+        "teacher": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.3,
+          "mean_utility": -0.4,
+          "mean_decisions": 60.15
+        }
+      },
+      "loss": 0.22620830163359643,
+      "teacher_loss": 1.572579625248909,
+      "policy_loss": -0.004028341080993414,
+      "value_loss": 0.23782358076423407,
+      "entropy": 1.7427076548337936,
+      "kl": 0.004367133355491148,
+      "clip_fraction": 0.055998410936444996,
+      "gradient_norm": 0.6045667506754399
+    },
+    {
+      "update": 11,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1386,
+      "decisions": 1990,
+      "collection_seconds": 1.1572307499591261,
+      "decisions_per_second": 1719.6224694774899,
+      "parameter_delta": 1.1400638818740845,
+      "evaluation": {
+        "greedy": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.9,
+          "mean_utility": 0.8,
+          "mean_decisions": 61.55
+        },
+        "initial": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.35,
+          "mean_utility": -0.3,
+          "mean_decisions": 65.15
+        },
+        "teacher": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.225,
+          "mean_utility": -0.55,
+          "mean_decisions": 60.45
+        }
+      },
+      "loss": 0.22531588612632317,
+      "teacher_loss": 1.5450475134632804,
+      "policy_loss": -0.008672039786523039,
+      "value_loss": 0.25409134511243214,
+      "entropy": 1.705071517012336,
+      "kl": 0.002991222510352352,
+      "clip_fraction": 0.03819481672888452,
+      "gradient_norm": 0.6768266321583227
+    },
+    {
+      "update": 12,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1532,
+      "decisions": 2046,
+      "collection_seconds": 1.116774542024359,
+      "decisions_per_second": 1832.0618200082256,
+      "parameter_delta": 1.0408995151519775,
+      "evaluation": {
+        "greedy": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.7,
+          "mean_utility": 0.4,
+          "mean_decisions": 61.75
+        },
+        "initial": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.6,
+          "mean_utility": 0.2,
+          "mean_decisions": 65.0
+        },
+        "teacher": {
+          "games": 20,
+          "completed": 20,
+          "truncated": 0,
+          "win_share": 0.4,
+          "mean_utility": -0.2,
+          "mean_decisions": 60.9
+        }
+      },
+      "loss": 0.22588740956659117,
+      "teacher_loss": 1.5768169934550922,
+      "policy_loss": -0.004329722956754267,
+      "value_loss": 0.24707851993540922,
+      "entropy": 1.7358939175804455,
+      "kl": 0.003478669737432938,
+      "clip_fraction": 0.041960685358693205,
+      "gradient_norm": 0.7301920584092537
+    }
+  ]
+}

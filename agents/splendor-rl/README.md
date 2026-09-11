@@ -37,7 +37,19 @@ uv pip install --python .venv/bin/python -r requirements.txt
 
 `--resume` 仅支持本项目产生且可信的本地 checkpoint；PyTorch checkpoint 包含优化器和随机状态。完整重现需相同依赖、种子、线程/环境数与配置。中断时未完成的一代不恢复，从最近已保存代继续。
 
-## 算法和模型
+## 攻略先验与更强模型
+
+新训练推荐选择“攻略预训练 + PPO”：64 局教师示范、30 epochs 策略蒸馏、按玩家分别计算 GAE、自我对弈及逐代衰减教师损失。旧模型继续支持原有 424/47 维输入；新模型使用 433/73 维策略特征，不能把旧权重直接硬塞进新结构。续训会自动识别模型模式。
+
+[完整设计与战胜强人类的验证路线](STRONG_PLAY_DESIGN.md) · [V2 对照实验](../../experiments/splendor-rl-knowledge-v2.md)
+
+```bash
+.venv/bin/python train.py --knowledge --warmup-episodes 64 --episodes 32 --updates 12 --eval-games 20
+```
+
+教师只是训练标签，网络推理不加教师评分；仍以真实胜负为奖励。配置参数 `--warmup-epochs 0 --teacher-weight 0` 可运行去先验消融，`--deterministic` 和 `--teacher-policy` 分别评估确定性模型与手写教师，结果必须分开报告。
+
+## V1 算法和模型
 
 详见 [DESIGN.md](DESIGN.md)。当前实现约 9.4 万参数，CPU 批量推理和更新。模型接收 424 维当前座位视角特征，并逐项评分每个 47 维合法行动；合法行动数量动态变化，不使用固定上限截断。
 
