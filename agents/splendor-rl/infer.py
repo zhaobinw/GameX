@@ -8,7 +8,7 @@ from model import choose
 torch.set_num_threads(1)
 model, checkpoint = load(sys.argv[1])
 model.eval()
-print(json.dumps({'ready': True, 'knowledge': bool(checkpoint['config'].get('knowledge')), 'generation': checkpoint['update']}), flush=True)
+print(json.dumps({'ready': True, 'knowledge': bool(checkpoint['config'].get('knowledge')), 'generation': checkpoint['update'], 'label': '联赛版' if 'PFSP' in checkpoint['config'].get('algorithm', '') else '攻略版'}), flush=True)
 for line in sys.stdin:
     try:
         item = json.loads(line)

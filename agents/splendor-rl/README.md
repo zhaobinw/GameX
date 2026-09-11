@@ -66,3 +66,15 @@ npm run simulate -- --games 30
 ```
 
 覆盖隐藏信息隔离、公共预留记忆、2–4 人特征维度、动态行动 mask、实际梯度更新、checkpoint 往返、并行种子复现、回放终局一致性、截断不判平。实测结果见 [实验报告](../../experiments/splendor-rl-first-run.md)。
+
+## 多策略联赛训练（V3 / V4 实验）
+
+[研究、真人复盘与实现边界](LEAGUE_DESIGN.md)。使用完整规则、旧模型及多风格固定策略对手，优先安排较难战胜的对手，并定期加入新快照。
+
+```bash
+.venv/bin/python league_train.py --source runs/knowledge-v2-dev/latest.pt --run runs/league-new --updates 64 --episodes 128 --workers 8 --seed 721019 --validation-games 120 --validation-every 8 --holdout-games 200 --teacher-weight .03 --anchor-weight .08 --entropy-weight .003
+```
+
+V4 用较弱的教师模仿和旧模型 KL 约束稳定更新，并降低熵奖励；这属于需要评估的算法变体，不代表预先确认更强。训练进度可在实验室的记录列表查看，联赛暂不支持一键续训。命令行 `--source` 可开始新实验，不能视为完整恢复旧联赛。STOP 文件在采样/更新边界生效，最终评估期间须等评估完成。正式棋力结论以留出报告为准。
+
+真人复盘转换：`node replay_examples.mjs 输入复盘.json 输出样本.json 0`。只接受完整合法终局，输出玩家 1 当时能看到的编码及动作索引；样本请放在忽略目录 `runs/`。

@@ -41,3 +41,18 @@ test('strategy projection never mutates observation, and scores winning buy',()=
  const f=encode(o,[{type:'buy',card:id,payment:{white:0,blue:0,green:0,red:0,black:0,gold:0}},{type:'reserve',tier:1}],true);
  assert.ok(f.teacher[0]>f.teacher[1]);assert.deepEqual(o,saved);
 });
+
+test('human replay examples reject unfinished games and contain only seat observations',async()=>{
+ const {replayExamples}=await import('./replay_examples.mjs');
+ const {replayRecord}=await import('../../games/splendor/src/engine.js');
+ let state=createGame({seed:'human-examples'});
+ assert.throws(()=>replayExamples(replayRecord(state)),/completed/);
+ for(let i=0;i<1000&&state.phase!=='ended';i++){
+  const actions=legalActions(state),buy=actions.find(a=>a.type==='buy');state=step(state,buy||actions[i%actions.length]);
+ }
+ assert.equal(state.phase,'ended');
+ const record=replayRecord(state),dataset=replayExamples(record,0);
+ assert.ok(dataset.examples.length);assert.ok(dataset.examples.every(x=>x.state.length===433&&x.actions[x.index]));
+ const bad=structuredClone(record);bad.moves[0].action={type:'buy',card:'invented'};
+ assert.throws(()=>replayExamples(bad),/illegal/);
+});

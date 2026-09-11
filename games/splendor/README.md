@@ -92,6 +92,8 @@ state = step(state, actions[0]);
 
 右上角“与 AI 对战”开启双人局，可选先手。你固定为玩家 1；玩家 2 由真实策略网络自动完成行动、超额归还和贵族选择。刷新页面仍保持你的座位，AI 思考时不能代操作其座位。AI 出错时可点击重试。
 
-默认读取 `agents/splendor-rl/runs/knowledge-v2-dev/latest.pt`，使用该项目 `.venv/bin/python`。需要先按 AI 项目说明安装依赖并生成模型；权重不随 Git 分发。可通过服务环境变量 `SPLENDOR_AI_MODEL` / `SPLENDOR_AI_PYTHON` 指定其他可信本地检查点与解释器。模型在首次人机对局时加载，服务重启后重新加载。输入仅为当前 AI 座位的规则观察与全部合法行动，采用确定性最高概率决策，不由攻略教师或贪心模型代打。
+未登记升级模型时读取 `agents/splendor-rl/runs/knowledge-v2-dev/latest.pt`，使用该项目 `.venv/bin/python`。需要先按 AI 项目说明安装依赖并生成模型；权重不随 Git 分发。可通过服务环境变量 `SPLENDOR_AI_MODEL` / `SPLENDOR_AI_PYTHON` 指定其他可信本地检查点与解释器。模型在首次人机对局时加载，服务重启后重新加载。输入仅为当前 AI 座位的规则观察与全部合法行动，采用确定性最高概率决策，不由攻略教师或贪心模型代打。
 
 验证包含真实检查点完整对局（无本地权重时明确跳过）、规则回归及浏览器人机回合交接。
+
+通过独立评估后，可用忽略目录 `agents/splendor-rl/runs/table-model.json` 指定默认模型（`checkpoint` 为 runs 下相对路径）。环境变量 `SPLENDOR_AI_MODEL` 优先；没有登记时回退旧攻略版。已加载的模型在服务运行期间保持固定。`SPLENDOR_RESTORE_REPLAY` 可在启动时重放可信本地复盘以恢复棋盘；这是显式启动选项，不是自动存档。

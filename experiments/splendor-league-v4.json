@@ -1,0 +1,206 @@
+{
+  "run": "league-v4-stable",
+  "best_update": 64,
+  "holdout_seed": 20721019,
+  "paired_decks": 100,
+  "bootstrap_samples": 10000,
+  "rows": {
+    "initial": {
+      "baseline": {
+        "games": 200,
+        "completed": 200,
+        "truncated": 0,
+        "win_share": 0.5,
+        "mean_utility": 0.0,
+        "mean_decisions": 58.6
+      },
+      "candidate": {
+        "games": 200,
+        "completed": 199,
+        "truncated": 1,
+        "win_share": 0.592964824120603,
+        "mean_utility": 0.18592964824120603,
+        "mean_decisions": 58.465
+      },
+      "scheduled_baseline": 0.5,
+      "scheduled_candidate": 0.59,
+      "delta": 0.09,
+      "delta_ci95": [
+        0.02,
+        0.16
+      ],
+      "candidate_ci95": [
+        0.52,
+        0.66
+      ]
+    },
+    "teacher": {
+      "baseline": {
+        "games": 200,
+        "completed": 200,
+        "truncated": 0,
+        "win_share": 0.47,
+        "mean_utility": -0.06,
+        "mean_decisions": 58.26
+      },
+      "candidate": {
+        "games": 200,
+        "completed": 200,
+        "truncated": 0,
+        "win_share": 0.555,
+        "mean_utility": 0.11,
+        "mean_decisions": 58.395
+      },
+      "scheduled_baseline": 0.47,
+      "scheduled_candidate": 0.555,
+      "delta": 0.085,
+      "delta_ci95": [
+        -0.0075,
+        0.1775
+      ],
+      "candidate_ci95": [
+        0.485,
+        0.6225
+      ]
+    },
+    "rush": {
+      "baseline": {
+        "games": 200,
+        "completed": 198,
+        "truncated": 2,
+        "win_share": 0.4494949494949495,
+        "mean_utility": -0.10101010101010101,
+        "mean_decisions": 62.76
+      },
+      "candidate": {
+        "games": 200,
+        "completed": 198,
+        "truncated": 2,
+        "win_share": 0.553030303030303,
+        "mean_utility": 0.10606060606060606,
+        "mean_decisions": 66.945
+      },
+      "scheduled_baseline": 0.445,
+      "scheduled_candidate": 0.5475,
+      "delta": 0.1025,
+      "delta_ci95": [
+        0.015,
+        0.19
+      ],
+      "candidate_ci95": [
+        0.4825,
+        0.61
+      ]
+    },
+    "engine": {
+      "baseline": {
+        "games": 200,
+        "completed": 200,
+        "truncated": 0,
+        "win_share": 0.5225,
+        "mean_utility": 0.045,
+        "mean_decisions": 58.225
+      },
+      "candidate": {
+        "games": 200,
+        "completed": 200,
+        "truncated": 0,
+        "win_share": 0.6175,
+        "mean_utility": 0.235,
+        "mean_decisions": 58.65
+      },
+      "scheduled_baseline": 0.5225,
+      "scheduled_candidate": 0.6175,
+      "delta": 0.095,
+      "delta_ci95": [
+        0.005,
+        0.185
+      ],
+      "candidate_ci95": [
+        0.5475,
+        0.685
+      ]
+    },
+    "denial": {
+      "baseline": {
+        "games": 200,
+        "completed": 198,
+        "truncated": 2,
+        "win_share": 0.5,
+        "mean_utility": 0.0,
+        "mean_decisions": 66.845
+      },
+      "candidate": {
+        "games": 200,
+        "completed": 199,
+        "truncated": 1,
+        "win_share": 0.6055276381909548,
+        "mean_utility": 0.21105527638190955,
+        "mean_decisions": 63.84
+      },
+      "scheduled_baseline": 0.495,
+      "scheduled_candidate": 0.6025,
+      "delta": 0.1075,
+      "delta_ci95": [
+        0.02,
+        0.195
+      ],
+      "candidate_ci95": [
+        0.5324375,
+        0.67
+      ]
+    },
+    "greedy": {
+      "baseline": {
+        "games": 200,
+        "completed": 199,
+        "truncated": 1,
+        "win_share": 0.8542713567839196,
+        "mean_utility": 0.7085427135678392,
+        "mean_decisions": 58.32
+      },
+      "candidate": {
+        "games": 200,
+        "completed": 198,
+        "truncated": 2,
+        "win_share": 0.8585858585858586,
+        "mean_utility": 0.7171717171717171,
+        "mean_decisions": 57.36
+      },
+      "scheduled_baseline": 0.85,
+      "scheduled_candidate": 0.85,
+      "delta": 0.0,
+      "delta_ci95": [
+        -0.06,
+        0.06
+      ],
+      "candidate_ci95": [
+        0.805,
+        0.895
+      ]
+    }
+  },
+  "mean_delta": 0.07999999999999999,
+  "mean_delta_ci95": [
+    0.03791666666666668,
+    0.12208333333333334
+  ],
+  "promotion_passed": true,
+  "replication": {
+    "seed": 30721019,
+    "summary": {
+      "games": 600,
+      "completed": 599,
+      "truncated": 1,
+      "win_share": 0.6118530884808013,
+      "mean_utility": 0.22370617696160267,
+      "mean_decisions": 58.63166666666667
+    },
+    "combined_games": 800,
+    "combined_win_share": 0.605625,
+    "combined_ci95": [
+      0.570625,
+      0.64
+    ]
+  }
+}

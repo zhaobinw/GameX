@@ -3,12 +3,14 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { randomBytes } from 'node:crypto';
-import { createGame, step, observe, legalActions, DATA, replayRecord } from './engine.js';
+import { createGame, step, observe, legalActions, DATA, replayRecord, replay } from './engine.js';
 
 import { prepareAI, selectAI } from './ai.js';
 
 const root = path.resolve(fileURLToPath(new URL('../web/', import.meta.url)));
-let state = createGame({ seed: randomBytes(16).toString('hex') });
+let state = process.env.SPLENDOR_RESTORE_REPLAY
+  ? replay(JSON.parse(await readFile(process.env.SPLENDOR_RESTORE_REPLAY, 'utf8')))
+  : createGame({ seed: randomBytes(16).toString('hex') });
 let revision = 0;
 let match = {mode:'hotseat'}, aiRunning = false, aiError = null;
 async function runAI() {
@@ -57,7 +59,7 @@ const server = http.createServer(async (req, res) => {
         const next = createGame({ players: payload.mode === 'ai' ? 2 : payload.players, firstPlayer: payload.firstPlayer, seed: randomBytes(16).toString('hex') });
         const info = payload.mode === 'ai' ? await prepareAI() : null;
         if (payload.revision !== revision) return json(res, 409, {error:'棋局已变化，请重试'});
-        state = next; match = info ? {mode:'ai', humanSeat:0, aiSeat:1, generation:info.generation} : {mode:'hotseat'};
+        state = next; match = info ? {mode:'ai', humanSeat:0, aiSeat:1, generation:info.generation, label:info.label} : {mode:'hotseat'};
         aiError = null;
       } else if (url.pathname === '/api/move') {
         if (match.mode === 'ai' && payload.player !== 0) return json(res, 403, {error:'AI 的回合由模型自动执行'});

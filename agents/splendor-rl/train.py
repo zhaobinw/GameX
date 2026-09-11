@@ -6,6 +6,7 @@ import torch
 from torch.distributions import Categorical
 from env import Environments, ROOT
 from model import Policy, batch, choose
+from league import STYLES, strategy_scores
 
 SCHEMA=1
 DATA=ROOT/'../../games/splendor/data/base-game.json'
@@ -37,7 +38,7 @@ def utility(winners, seat, players):
     share=1/len(winners) if seat in winners else 0
     return (players*share-1)/(players-1)
 
-def collect(envs, model, pool, episodes, players, seed, budget, train=True, opponent='greedy', stop=None, demonstrate=False, deterministic=False, gae_lambda=1., evaluate_teacher=False):
+def collect(envs, model, pool, episodes, players, seed, budget, train=True, opponent='greedy', stop=None, demonstrate=False, deterministic=False, gae_lambda=1., evaluate_teacher=False, opponent_weights=None, deterministic_opponents=False):
     rng=random.Random(seed);generator=torch.Generator().manual_seed(seed)
     active={};next_game=0;finished=[];samples=[];steps=0;replay=None
     models={'current':model,**{f'old{i}':p for i,p in enumerate(pool)}}
@@ -49,7 +50,9 @@ def collect(envs, model, pool, episodes, players, seed, budget, train=True, oppo
         for p in range(players):
             if demonstrate:assignments.append('teacher')
             elif p==learner:assignments.append('teacher' if evaluate_teacher else 'current')
-            elif not train:assignments.append(opponent if opponent in ('greedy','teacher') else 'old0')
+            elif not train:assignments.append(opponent if opponent in ('greedy', *STYLES) else 'old0')
+            elif opponent_weights:
+                assignments.append(rng.choices(list(opponent_weights),weights=list(opponent_weights.values()))[0])
             else:
                 roll=rng.random()
                 if envs.knowledge:assignments.append('current' if roll<.3 else rng.choice(list(models)[1:]) if roll<.65 and pool else 'teacher' if roll<.9 else 'greedy')
@@ -68,10 +71,10 @@ def collect(envs, model, pool, episodes, players, seed, budget, train=True, oppo
             item=g['item'];which=g['assignments'][item['seat']]
             if not item['actions']:continue
             if which=='greedy':chosen[slot]=(greedy(item,g['rngs'][item['seat']]),None,None)
-            elif which=='teacher':chosen[slot]=(int(np.argmax(item['teacher'])),None,0.)
+            elif which in STYLES:chosen[slot]=(int(np.argmax(strategy_scores(item,which))),None,0.)
             else:grouped.setdefault(which,[]).append(slot)
         for which,slots in grouped.items():
-            indices,logps,values=choose(models[which],[active[s]['item'] for s in slots],generator,deterministic=deterministic and not train,uniforms=[active[s]['rngs'][active[s]['item']['seat']].random() for s in slots])
+            indices,logps,values=choose(models[which],[active[s]['item'] for s in slots],generator,deterministic=(deterministic and not train) or (deterministic_opponents and which != 'current'),uniforms=[active[s]['rngs'][active[s]['item']['seat']].random() for s in slots])
             for s,i,l,v in zip(slots,indices,logps,values):chosen[s]=(i,l,v)
         commands=[]
         for slot,(index,logp,value) in chosen.items():
@@ -85,7 +88,7 @@ def collect(envs, model, pool, episodes, players, seed, budget, train=True, oppo
         for slot,g in list(active.items()):
             item=g['item'];ended=item['ended'];cut=item['decisions']>=budget or not item['actions']
             if not ended and not cut:continue
-            finished.append(dict(game=g['game'],completed=ended,decisions=item['decisions'],scores=item['scores'],winners=item['winners'],learner=g['learner'],utility=utility(item['winners'],g['learner'],players) if ended else None,win_share=(1/len(item['winners']) if g['learner'] in item['winners'] else 0) if ended else None))
+            finished.append(dict(opponent=next((a for p,a in enumerate(g['assignments']) if p!=g['learner']),None),game=g['game'],completed=ended,decisions=item['decisions'],scores=item['scores'],winners=item['winners'],learner=g['learner'],utility=utility(item['winners'],g['learner'],players) if ended else None,win_share=(1/len(item['winners']) if g['learner'] in item['winners'] else 0) if ended else None))
             if ended:
                 if replay is None:
                     replay=item.get('record')
@@ -104,7 +107,7 @@ def collect(envs, model, pool, episodes, players, seed, budget, train=True, oppo
         for cmd,item in zip(reset,envs.call(reset) if reset else []):active[cmd['env']]['item']=item
     return samples,finished,dict(decisions=steps,seconds=time.monotonic()-started),replay
 
-def update_ppo(model, optimizer, samples, rng, epochs=4, minibatch=128, teacher_weight=0.):
+def update_ppo(model, optimizer, samples, rng, epochs=4, minibatch=128, teacher_weight=0., reference=None, anchor_weight=0., entropy_weight=.01):
     if not samples:raise RuntimeError('No completed training episodes; increase decision budget or inspect policy. Truncations are not draws.')
     advantages=np.array([x.get('advantage',x['return']-x['value']) for x in samples],np.float32)
     advantages=(advantages-advantages.mean())/max(advantages.std(),1e-6)
@@ -119,7 +122,11 @@ def update_ppo(model, optimizer, samples, rng, epochs=4, minibatch=128, teacher_
             policy=-torch.minimum(ratio*adv,ratio.clamp(.8,1.2)*adv).mean()
             value=(values-target).square().mean();entropy=dist.entropy().mean()
             imitation=teacher_loss(logits,items) if teacher_weight else logits.new_tensor(0.)
-            loss=policy+.5*value-.01*entropy+teacher_weight*imitation
+            anchor=logits.new_tensor(0.)
+            if reference is not None and anchor_weight:
+                with torch.no_grad(): ref_logits,_=reference(*batch(items));ref_probs=ref_logits.softmax(-1)
+                anchor=(ref_probs*(ref_logits.log_softmax(-1)-logits.log_softmax(-1))).sum(-1).mean()
+            loss=policy+.5*value-entropy_weight*entropy+teacher_weight*imitation+anchor_weight*anchor
             if not torch.isfinite(loss):raise RuntimeError('Nonfinite PPO loss')
             optimizer.zero_grad();loss.backward();norm=torch.nn.utils.clip_grad_norm_(model.parameters(),.5)
             if not torch.isfinite(norm):raise RuntimeError('Nonfinite gradient')
