@@ -65,12 +65,12 @@ function render() {
     ${viewer === state.currentPlayer && state.phase !== 'ended' ? `<p class="market-guide-note">按玩家 ${viewer + 1} 的发展卡折扣与持有宝石计算 · 黄金可补足缺色</p>` : ''}
     <div class="nobles" aria-label="贵族">${state.nobles.map(id => { const n = getNoble(id), eligible = actions.some(a => a.type === 'noble' && a.noble === id); return `<button class="noble-card ${eligible ? 'eligible' : ''}" data-noble="${id}" aria-label="贵族，3分，要求${tokenText(n.cost)}${eligible ? '，可选择' : ''}"><img src="${n.image}" alt="贵族：${tokenText(n.cost)}"></button>`; }).join('')}</div>
     ${[2, 1, 0].map(t => `<div class="market-row"><button class="deck" data-tier="${t + 1}" aria-label="预留${t + 1}级牌堆顶牌，剩余${state.decks[t]}张" ${actions.some(a => a.type === 'reserve' && a.tier === t + 1) ? '' : 'disabled'}><strong>${['I', 'II', 'III'][t]}</strong><span>${state.decks[t]} 张</span><span>暗抽预留</span></button>${state.market[t].map(id => cardButton(id)).join('')}</div>`).join('')}
-  </section><aside class="side"><h2>${state.phase === 'ended' ? '最终牌桌' : `玩家 ${state.currentPlayer + 1} 的回合`}</h2><p class="status">${phaseText}${state.finalRound && state.phase !== 'ended' ? ' · 最后一轮' : ''}</p><h3>${returning ? '从持有筹码中归还' : '公共筹码池'}</h3>
+  </section><aside class="side"><h2>${state.phase === 'ended' ? '最终牌桌' : `玩家 ${state.currentPlayer + 1} 的回合`}</h2><p class="status">${phaseText}${state.finalRound && state.phase !== 'ended' ? ' · 最后一轮' : ''}</p><h3>${returning ? '我的筹码 · 点击颜色归还' : '公共筹码池'}</h3>
     <div class="bank">${colors.map(c => { const count = returning ? current.tokens[c] : state.bank[c]; return `<button class="gem-button ${selection[c] ? 'selected' : ''}" data-gem="${c}" aria-label="${names[c]}色筹码，可用${count}，已选${selection[c] || 0}" ${viewer === null || (!returning && (c === 'gold' || state.phase !== 'action')) || !count ? 'disabled' : ''}><img src="${catalog.tokens[c]}" alt="${names[c]}色筹码"><span>${names[c]} · ${count}</span><small>${selection[c] ? `已选 ${selection[c]}` : '　'}</small></button>`; }).join('')}</div>
-    <p class="hint">${returning ? '可归还原有或刚拿到的筹码，包括黄金。' : '拿 3 色各 1 枚，或从至少 4 枚的一色中拿 2 枚。黄金通过预留获得。'}</p>
+    <p class="hint">${returning ? `现在持有 ${sum(current.tokens)} 枚，超过上限 ${sum(current.tokens) - 10} 枚。点击上方想归还的颜色，再确认归还；原有或刚拿到的筹码都可以归还。` : '拿 3 色各 1 枚，或从至少 4 枚的一色中拿 2 枚。黄金通过预留获得。'}</p>
     <p class="hint" aria-live="polite">已选 ${sum(selection)} 枚${returning ? ` / 须归还 ${sum(current.tokens) - 10} 枚` : ''}。再次点击可调整数量。</p>
     ${returning ? `<div class="token-line">牌池 ${chips(state.bank)}</div>` : ''}
-    <div class="actions"><button id="confirm-tokens" class="primary" ${matchingSelection() ? '' : 'disabled'}>${returning ? '归还筹码' : '拿取筹码'}</button><button id="clear-tokens">清空选择</button></div>
+    <div class="actions"><button id="confirm-tokens" class="primary" ${matchingSelection() ? '' : 'disabled'}>${returning ? '确认归还筹码' : '拿取筹码'}</button><button id="clear-tokens">清空选择</button></div>${pendingTake ? '<button id="cancel-take" class="cancel-take">取消本次拿取，改选行动</button>' : ''}
     <p class="hint">${state.phase === 'noble' ? '点击上方高亮的贵族。一次回合只能获得一位。' : '点击发展卡购买或预留；点击左侧牌堆可暗抽预留。'}</p><p class="hint">持有 ${sum(current.tokens)} / 10 枚 · 预留 ${current.reserved.length} / 3 张</p>
   </aside></div>
   <section class="players" style="--players:${state.players.length}" aria-label="玩家区域">${state.players.map(p => `<article class="player ${p.id === state.currentPlayer ? 'active' : ''}"><div class="player-head"><strong>玩家 ${p.id + 1}${p.id === state.firstPlayer ? ' · 先手' : ''}</strong><span class="points">${p.score} 分</span></div>${playerTokenSummary(p)}<div class="token-line">筹码 ${chips(p.tokens)}</div><div class="token-line">折扣 ${chips(p.bonuses)}</div><button data-player="${p.id}">已购 ${p.purchased.length} 张 · 贵族 ${p.nobles.length} 位</button><div class="reserve-row">${p.reserved.map(id => id ? cardButton(id, true) : '<div class="hidden-card">预留暗牌</div>').join('')}</div></article>`).join('')}</section>
@@ -84,6 +84,7 @@ function render() {
     selection[c] = ((selection[c] || 0) + 1) % (maximum + 1); sounds.select(); render();
   });
   $('#confirm-tokens').onclick = () => { const action = matchingSelection(); if (action) move(action); };
+  if ($('#cancel-take')) $('#cancel-take').onclick = cancelTake;
   $('#clear-tokens').onclick = () => { selection = {}; render(); };
   const exportButton = $('#export-replay');
   if (exportButton) exportButton.onclick = async () => {
@@ -97,6 +98,7 @@ function matchingSelection() {
 }
 async function refresh() {
   const result = await request('/api/state' + (viewer === null ? '' : `?viewer=${viewer}`));
+  pendingTake = null;
   state = result.state; actions = result.actions; revision = result.revision;
   if (state.phase !== 'ended' && viewer !== state.currentPlayer) {
     viewer = null; actions = [];
@@ -106,35 +108,42 @@ async function refresh() {
   }
   render();
 }
-function planExcessTake(action) {
-  const held = state.players[viewer].tokens;
-  const available = Object.fromEntries(colors.map(c => [c, held[c] + (action.tokens[c] || 0)]));
-  const excess = sum(available) - 10;
-  return new Promise(resolve => {
-    openModal(`<h2>拿取后将超过上限</h2><p>本次拿取 ${tokenText(action.tokens)}，总数将为 ${sum(available)} / 10。请选择归还 ${excess} 枚，再一起确认。</p><p class="hint">尚未拿取筹码。取消可回到牌桌，改选购买、预留或其他拿取方式。</p><div class="return-plan">${colors.filter(c => available[c]).map(c => `<label>${names[c]}色（拿取后 ${available[c]} 枚）<select data-return-color="${c}" aria-label="归还${names[c]}色">${Array.from({length:Math.min(excess, available[c])+1}, (_, n) => `<option value="${n}">${n} 枚</option>`).join('')}</select></label>`).join('')}</div><p id="return-plan-count" aria-live="polite">已选 0 / ${excess} 枚</p><div class="actions"><button id="confirm-take-plan" class="primary" disabled>确认拿取并归还</button><button id="cancel-take-plan">取消拿取，改选行动</button></div>`);
-    let returned = {};
-    const finish = value => { modal.removeEventListener('close', onClose); modal.close(); resolve(value); };
-    const onClose = () => { modal.removeEventListener('close', onClose); resolve(null); };
-    modal.addEventListener('close', onClose);
-    document.querySelectorAll('[data-return-color]').forEach(el => el.onchange = () => {
-      returned[el.dataset.returnColor] = Number(el.value);
-      $('#return-plan-count').textContent = `已选 ${sum(returned)} / ${excess} 枚`;
-      $('#confirm-take-plan').disabled = sum(returned) !== excess;
-    });
-    $('#cancel-take-plan').onclick = () => finish(null);
-    $('#confirm-take-plan').onclick = () => { if (sum(returned) === excess) finish({type:'return', tokens:Object.fromEntries(Object.entries(returned).filter(([, n]) => n))}); };
-  });
+let pendingTake = null;
+function stageTake(action) {
+  pendingTake = { state, actions, action };
+  state = structuredClone(state);
+  for (const c of colors) {
+    state.players[viewer].tokens[c] += action.tokens[c] || 0;
+    state.bank[c] -= action.tokens[c] || 0;
+  }
+  state.phase = 'return';
+  const held = state.players[viewer].tokens, excess = sum(held) - 10;
+  actions = [];
+  function choices(index, remaining, tokens) {
+    if (index === colors.length) { if (!remaining) actions.push({type:'return', tokens}); return; }
+    const c = colors[index];
+    for (let n = 0; n <= Math.min(remaining, held[c]); n++) choices(index + 1, remaining - n, {...tokens, [c]:n});
+  }
+  choices(0, excess, {});
+  selection = {}; sounds.action(action); render();
+}
+function cancelTake() {
+  if (busy || !pendingTake) return;
+  state = pendingTake.state; actions = pendingTake.actions; pendingTake = null;
+  selection = {}; sounds.stop(); render();
 }
 async function move(action, confirmed = false) {
-  if (!confirmed && action.type === 'take' && viewer !== null && sum(state.players[viewer].tokens) + sum(action.tokens) > 10) {
-    if (busy) return { ok:false, error:'上一步仍在处理中' };
-    busy = true;
-    const returnAction = await planExcessTake(action);
-    busy = false;
-    if (!returnAction) { selection = {}; render(); return {ok:false, cancelled:true}; }
-    const taken = await move(action, true);
+  if (busy) return {ok:false, error:'上一步仍在处理中'};
+  if (pendingTake && action.type === 'return') {
+    const draft = pendingTake;
+    state = draft.state; actions = draft.actions; pendingTake = null;
+    const taken = await move(draft.action, true);
     if (!taken.ok) return taken;
-    return move(returnAction);
+    return move(action);
+  }
+  if (!confirmed && action.type === 'take' && viewer !== null && sum(state.players[viewer].tokens) + sum(action.tokens) > 10) {
+    stageTake(action);
+    return {ok:true, pending:true, revision, currentPlayer:state.currentPlayer, phase:state.phase};
   }
   if (busy) return { ok: false, error: '上一步仍在处理中' }; busy = true;
   try {
@@ -143,7 +152,7 @@ async function move(action, confirmed = false) {
     if (modal.open) modal.close(); selection = {};
     await refresh();
     const marketTier = action.card ? before.market.findIndex(row => row.includes(action.card)) : -1;
-    sounds.action(action, {
+    if (!confirmed) sounds.action(action, {
       goldTaken: action.type === 'reserve' && before.bank.gold > 0,
       refilled: marketTier >= 0 && before.decks[marketTier] > 0,
       nobleVisited: state.log.slice(before.log.length).some(entry => entry.type === 'visit'),

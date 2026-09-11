@@ -670,3 +670,4 @@ label select {
   .reserve-row .development { flex:none; }
   footer { padding:12px 24px; }
 }
+.cancel-take { width:100%; margin-top:10px; font-size:14px; color:#f0d497; }
