@@ -1,0 +1,14 @@
+{
+  "name": "gamex-splendor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "test": "node --test tests/*.test.js",
+    "assets": "node scripts/fetch-assets.js",
+    "simulate": "node scripts/simulate.js"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "date": "2026-09-12",
+  "cards": 90,
+  "nobles": 10,
+  "card_mismatches": 0,
+  "noble_mismatches": 0,
+  "method": "Exact multiset comparison of tier, bonus, prestige and all five costs; exact noble cost multiset.",
+  "limitation": "Agreement of community transcriptions is not a publisher certification or a full independent physical-card visual audit.",
+  "local_catalog_sha256": "202dcd6648f52373f924e8b761b9b6646306270f46cae1bbc2ffdc9f9583efe3",
+  "sources": {
+    "mit_dataset": {
+      "url": "https://raw.githubusercontent.com/roeey777/Splendor-AI/95f84d2e6e839c0ef09ca97bdc3b3048a792fb0b/src/splendor/splendor/splendor_utils.py",
+      "sha256": "f4318e25da33ff14acab12cdad3e04377f1b2f5f89ac674dbebe07d118631444"
+    },
+    "splendimax_csv": {
+      "url": "https://raw.githubusercontent.com/bouk/splendimax/5ffcb148ee0093e3b47f612b04a1927301ff13ee/Splendor%20Cards.csv",
+      "sha256": "33e7e966758f73a6a236b8336f1ab7e9f057c8a55d33300671c9e918426cc2fb"
+    },
+    "photo_transcription": {
+      "url": "https://raw.githubusercontent.com/anicolao/splendor/5b3efd26f2e460b1bef3839a058270b536a13648/data/verified_card_properties.csv",
+      "sha256": "3e7025f64c7788a8021688099048aa4d21198a28286f3b227aa16fc805057f5b"
+    },
+    "seal256_nobles": {
+      "url": "https://raw.githubusercontent.com/seal256/splendor/263abc066c563a1c89dba4bdc408446a20ad9d1d/pysplendor/splendor.py",
+      "sha256": "4df17f4a5173f3849a2c9a38a69a411739dfb2986d543ccf9ce1a6456ea522ac"
+    }
+  }
+}

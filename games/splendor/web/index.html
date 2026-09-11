@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>璀璨宝石 · 经典基础版</title>
+  <meta name="description" content="Splendor 经典基础版的本地桌游环境，支持二至四人轮流对局。">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23235c92' d='M8 4h16l7 9-15 17L1 13z'/%3E%3Cpath fill='none' stroke='%23fff' d='M1 13h30M8 4l8 26L24 4'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><div><h1>璀璨宝石 <span>SPLENDOR</span></h1><p>经典基础版 · 2–4 人同机轮流</p></div><nav><button id="rules-button">规则与来源</button><button id="new-button">新对局</button></nav></header>
+  <div id="error" role="alert" hidden></div>
+  <main id="table" aria-label="璀璨宝石牌桌"><p>正在准备牌桌…</p></main>
+  <footer>Marc André · Pascal Quidault · SPACE Cowboys　|　非官方本地研究实现</footer>
+  <dialog id="modal"><div id="modal-body"></div><button id="close-modal">关闭</button></dialog>
+  <dialog id="handoff"><h2 id="handoff-title"></h2><p>请将屏幕交给该玩家，再查看预留牌。</p><button id="ready">开始我的回合</button></dialog>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
