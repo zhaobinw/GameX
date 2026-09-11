@@ -106,7 +106,36 @@ async function refresh() {
   }
   render();
 }
-async function move(action) {
+function planExcessTake(action) {
+  const held = state.players[viewer].tokens;
+  const available = Object.fromEntries(colors.map(c => [c, held[c] + (action.tokens[c] || 0)]));
+  const excess = sum(available) - 10;
+  return new Promise(resolve => {
+    openModal(`<h2>拿取后将超过上限</h2><p>本次拿取 ${tokenText(action.tokens)}，总数将为 ${sum(available)} / 10。请选择归还 ${excess} 枚，再一起确认。</p><p class="hint">尚未拿取筹码。取消可回到牌桌，改选购买、预留或其他拿取方式。</p><div class="return-plan">${colors.filter(c => available[c]).map(c => `<label>${names[c]}色（拿取后 ${available[c]} 枚）<select data-return-color="${c}" aria-label="归还${names[c]}色">${Array.from({length:Math.min(excess, available[c])+1}, (_, n) => `<option value="${n}">${n} 枚</option>`).join('')}</select></label>`).join('')}</div><p id="return-plan-count" aria-live="polite">已选 0 / ${excess} 枚</p><div class="actions"><button id="confirm-take-plan" class="primary" disabled>确认拿取并归还</button><button id="cancel-take-plan">取消拿取，改选行动</button></div>`);
+    let returned = {};
+    const finish = value => { modal.removeEventListener('close', onClose); modal.close(); resolve(value); };
+    const onClose = () => { modal.removeEventListener('close', onClose); resolve(null); };
+    modal.addEventListener('close', onClose);
+    document.querySelectorAll('[data-return-color]').forEach(el => el.onchange = () => {
+      returned[el.dataset.returnColor] = Number(el.value);
+      $('#return-plan-count').textContent = `已选 ${sum(returned)} / ${excess} 枚`;
+      $('#confirm-take-plan').disabled = sum(returned) !== excess;
+    });
+    $('#cancel-take-plan').onclick = () => finish(null);
+    $('#confirm-take-plan').onclick = () => { if (sum(returned) === excess) finish({type:'return', tokens:Object.fromEntries(Object.entries(returned).filter(([, n]) => n))}); };
+  });
+}
+async function move(action, confirmed = false) {
+  if (!confirmed && action.type === 'take' && viewer !== null && sum(state.players[viewer].tokens) + sum(action.tokens) > 10) {
+    if (busy) return { ok:false, error:'上一步仍在处理中' };
+    busy = true;
+    const returnAction = await planExcessTake(action);
+    busy = false;
+    if (!returnAction) { selection = {}; render(); return {ok:false, cancelled:true}; }
+    const taken = await move(action, true);
+    if (!taken.ok) return taken;
+    return move(returnAction);
+  }
   if (busy) return { ok: false, error: '上一步仍在处理中' }; busy = true;
   try {
     const before = state;
