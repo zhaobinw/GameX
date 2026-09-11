@@ -44,6 +44,22 @@ function priceBreakdown(c) {
   const player = state.players[viewer], g = purchaseGuide(c, player);
   return `<table class="price-breakdown"><caption>玩家 ${viewer + 1} · 费用明细</caption><thead><tr><th>宝石</th><th>原价</th><th>折扣</th><th>应付</th><th>持有</th><th>还缺</th></tr></thead><tbody>${GEM_COLORS.filter(color => c.cost[color]).map(color => `<tr><th><span class="chip ${color}">${names[color]}</span></th><td>${c.cost[color]}</td><td>−${Math.min(c.cost[color], player.bonuses[color] || 0)}</td><td><strong>${g.effective[color]}</strong></td><td>${player.tokens[color]}</td><td class="${g.missing[color] ? 'short-number' : ''}">${g.missing[color]}</td></tr>`).join('')}</tbody></table><p class="purchase-status ${g.affordable ? 'can-afford' : ''}">${guideStatus(g)}</p><p class="hint">持有黄金 ${g.goldAvailable} 枚，可替代任意颜色。各色“还缺”在使用黄金前计算${g.goldNeeded ? `，合计需补 ${g.goldNeeded} 枚` : ''}。</p>`;
 }
+function visibleReserves(player) {
+  // Market reservations are public knowledge even when the private hand is masked.
+  if (player.reserved.some(Boolean)) return player.reserved;
+  const held = [];
+  for (const entry of state.log) {
+    if (entry.player !== player.id) continue;
+    if (entry.type === 'reserve') held.push(entry.card || null);
+    if (entry.type === 'buy') {
+      const index = held.indexOf(entry.card);
+      if (index >= 0) held.splice(index, 1);
+
+    }
+  }
+  const known = held.filter(Boolean);
+  return player.reserved.map(id => id || known.shift() || null);
+}
 function cardButton(id, reserved = false) {
   if (!id) return '<div class="empty-card">牌堆已空</div>';
   const c = getCard(id), affordable = actions.some(a => a.type === 'buy' && a.card === id);
@@ -75,7 +91,7 @@ function render() {
     <div class="actions"><button id="confirm-tokens" class="primary" ${matchingSelection() ? '' : 'disabled'}>${returning ? '确认归还筹码' : '拿取筹码'}</button><button id="clear-tokens">清空选择</button></div>${pendingTake ? '<button id="cancel-take" class="cancel-take">取消本次拿取，改选行动</button>' : ''}
     <p class="hint">${state.phase === 'noble' ? '点击上方高亮的贵族。一次回合只能获得一位。' : '点击发展卡购买或预留；点击左侧牌堆可暗抽预留。'}</p><p class="hint">持有 ${sum(current.tokens)} / 10 枚 · 预留 ${current.reserved.length} / 3 张</p>
   </aside></div>
-  <section class="players" style="--players:${state.players.length}" aria-label="玩家区域">${state.players.map(p => `<article class="player ${p.id === state.currentPlayer ? 'active' : ''}"><div class="player-head"><strong>${seatName(p.id)}${p.id === state.firstPlayer ? ' · 先手' : ''}</strong><span class="points">${p.score} 分</span></div>${playerTokenSummary(p)}<div class="token-line">筹码 ${chips(p.tokens)}</div><div class="token-line">折扣 ${chips(p.bonuses)}</div><button data-player="${p.id}">已购 ${p.purchased.length} 张 · 贵族 ${p.nobles.length} 位</button><div class="owned-nobles" aria-label="玩家 ${p.id + 1} 已获得的贵族">${p.nobles.length ? `<span class="owned-nobles-label">已获贵族 · ${p.nobles.length * 3} 分</span>${p.nobles.map(id => `<button class="noble-card" data-noble="${id}" aria-label="玩家 ${p.id + 1} 已获贵族，3分，要求${tokenText(getNoble(id).cost)}"><img src="${getNoble(id).image}" alt="已获贵族：${tokenText(getNoble(id).cost)}"></button>`).join('')}` : ''}</div><div class="reserve-row">${p.reserved.map(id => id ? cardButton(id, true) : '<div class="hidden-card">预留暗牌</div>').join('')}</div></article>`).join('')}</section>
+  <section class="players" style="--players:${state.players.length}" aria-label="玩家区域">${state.players.map(p => `<article class="player ${p.id === state.currentPlayer ? 'active' : ''}"><div class="player-head"><strong>${seatName(p.id)}${p.id === state.firstPlayer ? ' · 先手' : ''}</strong><span class="points">${p.score} 分</span></div>${playerTokenSummary(p)}<div class="token-line">筹码 ${chips(p.tokens)}</div><div class="token-line">折扣 ${chips(p.bonuses)}</div><button data-player="${p.id}">已购 ${p.purchased.length} 张 · 贵族 ${p.nobles.length} 位</button><div class="owned-nobles" aria-label="玩家 ${p.id + 1} 已获得的贵族">${p.nobles.length ? `<span class="owned-nobles-label">已获贵族 · ${p.nobles.length * 3} 分</span>${p.nobles.map(id => `<button class="noble-card" data-noble="${id}" aria-label="玩家 ${p.id + 1} 已获贵族，3分，要求${tokenText(getNoble(id).cost)}"><img src="${getNoble(id).image}" alt="已获贵族：${tokenText(getNoble(id).cost)}"></button>`).join('')}` : ''}</div><div class="reserve-row">${visibleReserves(p).map(id => id ? cardButton(id, true) : '<div class="hidden-card">预留暗牌</div>').join('')}</div></article>`).join('')}</section>
   <details class="history"><summary>对局记录 · 已完成 ${Math.min(...state.players.map(p => p.turns))} 轮</summary><ol>${state.log.map(logText).filter(Boolean).map(text => `<li>${esc(text)}</li>`).join('')}</ol></details>`;
   if ($('#retry-ai')) $('#retry-ai').onclick = async () => { try { await request('/api/ai/retry', {revision}); await refresh(); } catch(e) { error(e.message); } };
   document.querySelectorAll('[data-card]').forEach(el => el.onclick = () => showCard(el.dataset.card));
