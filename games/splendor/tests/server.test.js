@@ -20,6 +20,9 @@ test('HTTP service preserves rule authority, hidden information, revision checks
     };
     const home = await fetch(origin + '/'); assert.equal(home.status, 200); assert.match(await home.text(), /璀璨宝石/);
     const js = await fetch(origin + '/app.js'); assert.equal(js.status, 200); assert.match(js.headers.get('content-type'), /javascript/);
+    const sound = await fetch(origin + '/assets/audio/chip-lay-1.wav');
+    assert.equal(sound.status, 200); assert.equal(sound.headers.get('content-type'), 'audio/wav');
+    assert.equal(Buffer.from(await sound.arrayBuffer()).toString('ascii', 0, 4), 'RIFF');
     const first = (await get('/api/state')).data;
     assert.equal(first.revision, 0); assert.deepEqual(first.actions, []); assert.equal('seed' in first.state, false);
     const owner = (await get('/api/state?viewer=0')).data;

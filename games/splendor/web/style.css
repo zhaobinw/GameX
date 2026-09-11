@@ -133,8 +133,67 @@ main {
   gap:14px;
   max-width:700px;
   margin:0 auto 16px;
-  align-items:center;
+  align-items:start;
 }
+.development-wrap {
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:8px;
+  min-width:0;
+}
+.development-wrap .development {
+  align-self:center;
+  width:100%;
+}
+.card-guide {
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  padding:8px;
+  background:#09272bd9;
+  border:1px solid #66837c;
+  border-radius:6px;
+  min-height:102px;
+  font-size:14px;
+  line-height:1.4;
+}
+.guide-label { color:#c0d2ca; font-size:12px; }
+.effective-cost { display:flex; flex-wrap:wrap; gap:4px; }
+.effective-cost .chip { min-width:24px; padding:2px 4px; }
+.effective-cost .cost-short { outline:1px dashed #ffc0a1; outline-offset:2px; }
+.missing-cost { color:#ffc0a1; }
+.guide-status { color:#e3d4ac; }
+.can-afford .guide-status,.purchase-status.can-afford { color:#b9e5be; }
+.card-guide.can-afford { border-color:#88ac82; }
+.market-guide-note { margin:0 0 12px; font-size:14px; color:#c7d9cf; }
+.token-summary { margin:10px 0 12px; }
+.token-summary>div:first-child { display:flex; justify-content:space-between; gap:8px; align-items:baseline; }
+.token-summary strong { font-size:24px; color:#d7efdc; font-variant-numeric:tabular-nums; }
+.token-summary small { font-size:12px; color:#bdcec5; font-weight:400; }
+.token-summary strong small { font-size:16px; }
+.token-track { height:6px; border-radius:4px; background:#45625e; margin:5px 0; overflow:hidden; }
+.token-track>span { display:block; height:100%; background:#a6cbb0; }
+.token-capacity { font-size:12px; color:#c0d0c7; }
+.at-limit strong,.at-limit .token-capacity { color:#f0d497; }
+.at-limit .token-track>span { background:#e1c07b; }
+.over-limit strong,.over-limit .token-capacity { color:#ffb59d; }
+.over-limit .token-track>span { background:#f29373; }
+.price-breakdown { width:100%; border-collapse:collapse; margin-top:16px; font-size:14px; }
+.price-breakdown caption { text-align:left; color:#d9dece; margin-bottom:8px; }
+.price-breakdown th,.price-breakdown td { text-align:center; padding:7px 4px; border-bottom:1px solid #56746b; }
+.price-breakdown th { font-weight:500; }
+.short-number { color:#ffb59d; font-weight:700; }
+.purchase-status { font-weight:600; }
+.sound-settings { position:relative; }
+.sound-settings summary { list-style:none; cursor:pointer; padding:9px 12px; border:1px solid #78928c; border-radius:6px; background:#163d3f; }
+.sound-settings summary::-webkit-details-marker { display:none; }
+.sound-settings summary:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+.sound-popover { position:absolute; z-index:5; top:calc(100% + 8px); right:0; padding:16px; width:238px; background:#123234; border:1px solid #8b9e8a; border-radius:8px; box-shadow:0 8px 30px #0008; }
+.sound-popover label { margin:14px 0 6px; display:flex; justify-content:space-between; }
+.sound-popover input { width:100%; padding:0; accent-color:var(--gold); }
+.sound-popover button { width:100%; }
+.sound-popover #sound-preview { margin-top:12px; font-size:14px; }
 .development {
   padding:0;
   border:0;
@@ -319,7 +378,9 @@ main {
   display:flex;
   gap:8px;
   margin-top:10px;
+  flex-wrap:wrap;
 }
+.reserve-row .development-wrap { width:112px; }
 .reserve-row .development {
   height:85px;
   width:auto;

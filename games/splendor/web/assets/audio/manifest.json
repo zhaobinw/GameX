@@ -1,0 +1,108 @@
+{
+  "source": "https://kenney.nl/assets/casino-audio",
+  "download": "https://kenney.nl/media/pages/assets/casino-audio/2472606a04-1721639069/kenney_casino-audio.zip",
+  "pack": "Casino Audio 1.1",
+  "author": "Kenney Vleugels (Kenney.nl)",
+  "license": "CC0-1.0",
+  "conversion": "OGG to PCM signed 16-bit mono WAV, 44100 Hz; no compositional changes",
+  "files": [
+    {
+      "name": "chip-lay-1",
+      "original": "Audio/chip-lay-1.ogg",
+      "source_sha256": "4b2111252ccb64eed67f171e061053849cfbb29873536c03948646f244a3905c",
+      "sha256": "29d3c1057124cd8cb29753c7e61d227d479e13014e26e20ba75396bd4c7430ac",
+      "bytes": 15036
+    },
+    {
+      "name": "chip-lay-2",
+      "original": "Audio/chip-lay-2.ogg",
+      "source_sha256": "8ca8b2d450741c04ed7b4ba51ed3f73c2400c8b3dbe83b974be4fe4774a76712",
+      "sha256": "e6e8b4370a55774bcaf05ebe748ec27e959b3642dbfd863ab697def32b928398",
+      "bytes": 20106
+    },
+    {
+      "name": "chips-collide-1",
+      "original": "Audio/chips-collide-1.ogg",
+      "source_sha256": "f41b3d106360fc68ebc061a211d4265b4cb5fa1fbe86e4d57d3673510e2c3784",
+      "sha256": "4b0128c7c68f4d6b6c3c48c1eac6b33a627d07018d5fb04ed4eadda6669d34e0",
+      "bytes": 22644
+    },
+    {
+      "name": "chips-collide-2",
+      "original": "Audio/chips-collide-2.ogg",
+      "source_sha256": "2a10c5ff4b2fbaa55a317fc258ddce3fec85bd26db2d3c2ad298b3b33ce23bc6",
+      "sha256": "dfaefb98da9563775e9cf89abf11a5ea317f7bd8e01fca6f308c5607f000274a",
+      "bytes": 20106
+    },
+    {
+      "name": "chips-handle-1",
+      "original": "Audio/chips-handle-1.ogg",
+      "source_sha256": "a2c495237fb0dc0dc96ccc2c9840572edd226e6459398ecb631c6c9f9e5408f0",
+      "sha256": "4f479d7d17f0f20b364ef4b5a9e78b6c6d114fea290fb6b0d258bb04d4d8a0ad",
+      "bytes": 54432
+    },
+    {
+      "name": "chips-handle-2",
+      "original": "Audio/chips-handle-2.ogg",
+      "source_sha256": "099b6d7d3a71e7d22171a93d124e7366e326d32eb85d718ba29abded8a49c329",
+      "sha256": "0753d64966685a15d3e750887f92618fcb275689eea467de9ae53a8a4e38ac1d",
+      "bytes": 48254
+    },
+    {
+      "name": "chips-stack-1",
+      "original": "Audio/chips-stack-1.ogg",
+      "source_sha256": "12bf175b9afcea112175b241ad3336c6244ac5fdcdff8b5942ecc03f2225e0c4",
+      "sha256": "3745996244782870eb567af17874f3588dc8280a22b997fa0c9220b1f9eb4a50",
+      "bytes": 25178
+    },
+    {
+      "name": "chips-stack-2",
+      "original": "Audio/chips-stack-2.ogg",
+      "source_sha256": "9f985e766c3557eef1764240b48e30b2f0ffa870a99f05de85cd6bf0ea758ef5",
+      "sha256": "e2208de2a900a7041e6311e46c92f09576cec08f308e236f15e5365dc32dee33",
+      "bytes": 15036
+    },
+    {
+      "name": "card-slide-1",
+      "original": "Audio/card-slide-1.ogg",
+      "source_sha256": "006cf9822d15d7063f8899e56041f41646df30adb6fbd8b974ee5d5420012690",
+      "sha256": "bd57e406adcd7006ec40907d6777b6c510d260f805a9c4e573617ff0ba2c8891",
+      "bytes": 53066
+    },
+    {
+      "name": "card-slide-2",
+      "original": "Audio/card-slide-2.ogg",
+      "source_sha256": "e674a1679ec87b507047fe012d068ad2c412125f56186f0e732684705c2a6888",
+      "sha256": "b55e58377f422662ddfc3728cce1516736b12a06db46732d1cf86d0b0302346a",
+      "bytes": 51594
+    },
+    {
+      "name": "card-slide-3",
+      "original": "Audio/card-slide-3.ogg",
+      "source_sha256": "af2ab62656cb3df73316ce5771b8ee1111a840962b21607e3202151e7413c52c",
+      "sha256": "8a933897a853a71cc777534bc78fa088c1dc1ed2169fd48ebeaacad42f5ff736",
+      "bytes": 52832
+    },
+    {
+      "name": "card-place-1",
+      "original": "Audio/card-place-1.ogg",
+      "source_sha256": "d8f26c33a665dcbdcc6f632f6050bc9dd548feb0d4942d4547615926d3926810",
+      "sha256": "63f03a5e3fd7470d428e1e1da04a3ee528cd7faf5e4701f04c6fea7676a18a29",
+      "bytes": 60858
+    },
+    {
+      "name": "card-place-2",
+      "original": "Audio/card-place-2.ogg",
+      "source_sha256": "903d5050718595e87864dd755643b476ab1a5533080dcc2dddc72570d33ba9f8",
+      "sha256": "2fdc43d5fbed1e3186376b055ae6ffd30472557ee9136f5c33bfbe0cbe8f21d0",
+      "bytes": 40340
+    },
+    {
+      "name": "card-shuffle",
+      "original": "Audio/card-shuffle.ogg",
+      "source_sha256": "96c84883a30845ede723a4cf2e8369e9837e7dd4e0d4eb0212b0a7ed21b0f544",
+      "sha256": "c51f50ac8301c4e0f0cc1eb4ff9155d0384fb1db38ff5f487a9b281285b2b758",
+      "bytes": 270278
+    }
+  ]
+}
