@@ -1,0 +1,1512 @@
+{
+  "date": "2026-09-12",
+  "run": "selfplay-40",
+  "generation": 42,
+  "warmup_episodes": 16,
+  "sampled_episodes": 1280,
+  "completed": 1273,
+  "truncated": 7,
+  "median_decisions_per_second": 2732.9068069733657,
+  "config": {
+    "run": "agents/splendor-rl/runs/selfplay-40",
+    "updates": 40,
+    "episodes": 32,
+    "workers": 4,
+    "players": 2,
+    "budget": 800,
+    "eval_games": 8,
+    "seed": 20260912,
+    "resume": "agents/splendor-rl/runs/first-selfplay/latest.pt",
+    "evaluate": null,
+    "eval_seed": 908172,
+    "schema": 1,
+    "algorithm": "historical-self-play PPO, episodic Monte Carlo advantage",
+    "gamma": 1.0,
+    "clip": 0.2,
+    "entropy": 0.01,
+    "learning_rate": 0.0003,
+    "python": "3.12.12",
+    "torch": "2.14.0",
+    "numpy": "2.5.3",
+    "device": "cpu",
+    "platform": "macOS-15.6.1-arm64-arm-64bit",
+    "data_hash": "202dcd6648f52373f924e8b761b9b6646306270f46cae1bbc2ffdc9f9583efe3",
+    "git_commit": "1d9c0155dbd8183f61ed756277f79f580bf20e70",
+    "parameters": 93698,
+    "model": {
+      "state_dim": 424,
+      "action_dim": 47,
+      "hidden": 128
+    }
+  },
+  "holdout_seed": 177013,
+  "holdout_initial": {
+    "games": 100,
+    "completed": 100,
+    "truncated": 0,
+    "win_share": 0.13,
+    "mean_utility": -0.74,
+    "mean_decisions": 62.49
+  },
+  "holdout_trained": {
+    "games": 100,
+    "completed": 100,
+    "truncated": 0,
+    "win_share": 0.22,
+    "mean_utility": -0.56,
+    "mean_decisions": 62.5
+  },
+  "paired_bootstrap": {
+    "unit": "deck seed with two seats swapped",
+    "pairs": 50,
+    "resamples": 10000,
+    "seed": 7,
+    "mean_difference": 0.09,
+    "ci95": [
+      -0.01,
+      0.19
+    ]
+  },
+  "metrics": [
+    {
+      "update": 3,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1402,
+      "decisions": 2077,
+      "collection_seconds": 0.7802001249510795,
+      "decisions_per_second": 2662.137487007238,
+      "parameter_delta": 1.4511229991912842,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 65.0
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.875,
+          "mean_utility": 0.75,
+          "mean_decisions": 69.375
+        }
+      },
+      "loss": 0.39582136408849194,
+      "policy_loss": -0.00027257898314432663,
+      "value_loss": 0.8349632051858035,
+      "entropy": 2.1387667059898376,
+      "kl": 1.5453868937501365e-05,
+      "clip_fraction": 0.0,
+      "gradient_norm": 0.5236855670809746
+    },
+    {
+      "update": 4,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1502,
+      "decisions": 2041,
+      "collection_seconds": 0.8459980001207441,
+      "decisions_per_second": 2412.5352538761326,
+      "parameter_delta": 1.4636884927749634,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.125,
+          "mean_utility": -0.75,
+          "mean_decisions": 65.25
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 65.625
+        }
+      },
+      "loss": 0.392988213027517,
+      "policy_loss": 0.000606877263635397,
+      "value_loss": 0.8278860201438268,
+      "entropy": 2.156167815128962,
+      "kl": 2.8898630048956875e-05,
+      "clip_fraction": 0.0,
+      "gradient_norm": 0.7089723106473684
+    },
+    {
+      "update": 5,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1669,
+      "decisions": 2087,
+      "collection_seconds": 0.7724563751835376,
+      "decisions_per_second": 2701.770698059322,
+      "parameter_delta": 1.6655194759368896,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 67.625
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.1875,
+          "mean_utility": -0.625,
+          "mean_decisions": 68.625
+        }
+      },
+      "loss": 0.47520549276045393,
+      "policy_loss": 0.023104011729758765,
+      "value_loss": 0.9466102751238006,
+      "entropy": 2.1203657260962894,
+      "kl": 5.377323527357346e-05,
+      "clip_fraction": 0.0,
+      "gradient_norm": 0.8661497123539448
+    },
+    {
+      "update": 6,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1707,
+      "decisions": 2088,
+      "collection_seconds": 0.8413709590677172,
+      "decisions_per_second": 2481.663976509972,
+      "parameter_delta": 1.4639233350753784,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 67.625
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 67.0
+        }
+      },
+      "loss": 0.45632053618984564,
+      "policy_loss": -0.002708746469579637,
+      "value_loss": 0.9604507109948567,
+      "entropy": 2.1196076231343404,
+      "kl": 2.0687557914860527e-05,
+      "clip_fraction": 0.0,
+      "gradient_norm": 0.7763706248785768
+    },
+    {
+      "update": 7,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1541,
+      "decisions": 2053,
+      "collection_seconds": 0.875305833062157,
+      "decisions_per_second": 2345.4659188295536,
+      "parameter_delta": 1.5199806690216064,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 64.875
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.3125,
+          "mean_utility": -0.375,
+          "mean_decisions": 70.25
+        }
+      },
+      "loss": 0.3028534890080874,
+      "policy_loss": -0.0428623914754448,
+      "value_loss": 0.7336362651907481,
+      "entropy": 2.110225425316737,
+      "kl": 0.00034535906720870675,
+      "clip_fraction": 0.0,
+      "gradient_norm": 0.9360614539338992
+    },
+    {
+      "update": 8,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1368,
+      "decisions": 2091,
+      "collection_seconds": 0.8210141249001026,
+      "decisions_per_second": 2546.850214366804,
+      "parameter_delta": 1.5941778421401978,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 64.875
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.3125,
+          "mean_utility": -0.375,
+          "mean_decisions": 70.25
+        }
+      },
+      "loss": 0.38476293720304966,
+      "policy_loss": -0.002026608721776442,
+      "value_loss": 0.8143345239487562,
+      "entropy": 2.0377717234871606,
+      "kl": 4.305611884609045e-05,
+      "clip_fraction": 0.0,
+      "gradient_norm": 0.8026301671158184
+    },
+    {
+      "update": 9,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1357,
+      "decisions": 2115,
+      "collection_seconds": 0.8306545419618487,
+      "decisions_per_second": 2546.1848375676973,
+      "parameter_delta": 1.581028699874878,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.125,
+          "mean_utility": -0.75,
+          "mean_decisions": 65.75
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 70.25
+        }
+      },
+      "loss": 0.43627452850341797,
+      "policy_loss": -0.0006024779815396124,
+      "value_loss": 0.9157484160228209,
+      "entropy": 2.099720139395107,
+      "kl": 0.00041047459286987345,
+      "clip_fraction": 0.0004727162039754066,
+      "gradient_norm": 0.7920161194422028
+    },
+    {
+      "update": 10,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1637,
+      "decisions": 2053,
+      "collection_seconds": 0.7884341250173748,
+      "decisions_per_second": 2603.895410989165,
+      "parameter_delta": 1.6185543537139893,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.125,
+          "mean_utility": -0.75,
+          "mean_decisions": 66.875
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.875,
+          "mean_utility": 0.75,
+          "mean_decisions": 67.125
+        }
+      },
+      "loss": 0.401344954680938,
+      "policy_loss": -0.0009370221792218777,
+      "value_loss": 0.8456342845008924,
+      "entropy": 2.0535163489671855,
+      "kl": 0.0005552386218578948,
+      "clip_fraction": 0.0005310476900866398,
+      "gradient_norm": 0.7413536321658355
+    },
+    {
+      "update": 11,
+      "episodes": 32,
+      "completed": 31,
+      "truncated": 1,
+      "samples": 1355,
+      "decisions": 2012,
+      "collection_seconds": 0.8015345837920904,
+      "decisions_per_second": 2510.1848886933262,
+      "parameter_delta": 1.2391610145568848,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.1875,
+          "mean_utility": -0.625,
+          "mean_decisions": 67.5
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.875,
+          "mean_utility": 0.75,
+          "mean_decisions": 67.125
+        }
+      },
+      "loss": 0.44063868813894014,
+      "policy_loss": -9.335553146560083e-05,
+      "value_loss": 0.9213663732463663,
+      "entropy": 1.995113949884068,
+      "kl": 5.379014998073796e-05,
+      "clip_fraction": 0.0,
+      "gradient_norm": 0.925978340885856
+    },
+    {
+      "update": 12,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1440,
+      "decisions": 2095,
+      "collection_seconds": 0.8129882500506938,
+      "decisions_per_second": 2576.913011804742,
+      "parameter_delta": 1.6619938611984253,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.375,
+          "mean_utility": -0.25,
+          "mean_decisions": 65.75
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.5,
+          "mean_utility": 0.0,
+          "mean_decisions": 68.125
+        }
+      },
+      "loss": 0.3767299074679613,
+      "policy_loss": -0.007508985523600131,
+      "value_loss": 0.8083634984989961,
+      "entropy": 1.994285484155019,
+      "kl": 0.00025100194337331533,
+      "clip_fraction": 0.00016276041666666666,
+      "gradient_norm": 0.6530777427057425
+    },
+    {
+      "update": 13,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1479,
+      "decisions": 2058,
+      "collection_seconds": 0.7550810838583857,
+      "decisions_per_second": 2725.5351034405926,
+      "parameter_delta": 1.332960605621338,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 64.75
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.125,
+          "mean_utility": -0.75,
+          "mean_decisions": 67.0
+        }
+      },
+      "loss": 0.5030155405402184,
+      "policy_loss": -0.003099120066811641,
+      "value_loss": 1.0505445972085,
+      "entropy": 1.9157640462120373,
+      "kl": 0.0006362950936894171,
+      "clip_fraction": 0.001400656532496214,
+      "gradient_norm": 1.1515609013537567
+    },
+    {
+      "update": 14,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1446,
+      "decisions": 2081,
+      "collection_seconds": 0.8028913750313222,
+      "decisions_per_second": 2591.882370038931,
+      "parameter_delta": 1.4970126152038574,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.0,
+          "mean_utility": -1.0,
+          "mean_decisions": 64.0
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.5,
+          "mean_utility": 0.0,
+          "mean_decisions": 67.375
+        }
+      },
+      "loss": 0.4107635694866379,
+      "policy_loss": 0.0065637668982769055,
+      "value_loss": 0.8461989735563596,
+      "entropy": 1.8899688348174095,
+      "kl": 0.00034631330557507073,
+      "clip_fraction": 0.0,
+      "gradient_norm": 0.690690973152717
+    },
+    {
+      "update": 15,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1611,
+      "decisions": 2066,
+      "collection_seconds": 0.7337685830425471,
+      "decisions_per_second": 2815.601604845767,
+      "parameter_delta": 1.7301543951034546,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.375,
+          "mean_utility": -0.25,
+          "mean_decisions": 66.125
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 68.875
+        }
+      },
+      "loss": 0.34926992282271385,
+      "policy_loss": -0.004252715873567818,
+      "value_loss": 0.7437414796306536,
+      "entropy": 1.8348095990144289,
+      "kl": 0.00043688916618451074,
+      "clip_fraction": 0.002916666679084301,
+      "gradient_norm": 0.6380016987140362
+    },
+    {
+      "update": 16,
+      "episodes": 32,
+      "completed": 30,
+      "truncated": 2,
+      "samples": 1282,
+      "decisions": 1981,
+      "collection_seconds": 0.7723137498833239,
+      "decisions_per_second": 2565.0197219708652,
+      "parameter_delta": 1.398611068725586,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.125,
+          "mean_utility": -0.75,
+          "mean_decisions": 66.0
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 69.125
+        }
+      },
+      "loss": 0.38867941668087785,
+      "policy_loss": -0.04351950659077953,
+      "value_loss": 0.9015902565284208,
+      "entropy": 1.8596207797527313,
+      "kl": 5.5594718022885815e-05,
+      "clip_fraction": 0.0,
+      "gradient_norm": 1.240063914521174
+    },
+    {
+      "update": 17,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1545,
+      "decisions": 2050,
+      "collection_seconds": 0.7333862499799579,
+      "decisions_per_second": 2795.252842626955,
+      "parameter_delta": 1.553847312927246,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 65.5
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.875,
+          "mean_utility": 0.75,
+          "mean_decisions": 69.0
+        }
+      },
+      "loss": 0.30106150126084685,
+      "policy_loss": -0.0009207114792213991,
+      "value_loss": 0.6400250368393384,
+      "entropy": 1.8030308760129488,
+      "kl": 0.0010925167719576096,
+      "clip_fraction": 0.005709134615384615,
+      "gradient_norm": 0.9908256278588221
+    },
+    {
+      "update": 18,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1584,
+      "decisions": 2074,
+      "collection_seconds": 0.7568573749158531,
+      "decisions_per_second": 2740.2785105061384,
+      "parameter_delta": 1.6949893236160278,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.5,
+          "mean_utility": 0.0,
+          "mean_decisions": 65.375
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 67.375
+        }
+      },
+      "loss": 0.4268004037439823,
+      "policy_loss": -0.002963853068649769,
+      "value_loss": 0.8949322534295229,
+      "entropy": 1.770187027179278,
+      "kl": 0.0018706328850944724,
+      "clip_fraction": 0.0292968750358201,
+      "gradient_norm": 1.05571560217784
+    },
+    {
+      "update": 19,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1522,
+      "decisions": 2016,
+      "collection_seconds": 0.7692615839187056,
+      "decisions_per_second": 2620.695017331124,
+      "parameter_delta": 1.5300590991973877,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.125,
+          "mean_utility": -0.75,
+          "mean_decisions": 65.125
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.375,
+          "mean_utility": -0.25,
+          "mean_decisions": 67.25
+        }
+      },
+      "loss": 0.44258568653215963,
+      "policy_loss": -0.00037484165901939076,
+      "value_loss": 0.9202487543225288,
+      "entropy": 1.716385285059611,
+      "kl": 0.0003998647584921855,
+      "clip_fraction": 0.0003255208333333333,
+      "gradient_norm": 0.9169958072404066
+    },
+    {
+      "update": 20,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1513,
+      "decisions": 2048,
+      "collection_seconds": 0.7273202920332551,
+      "decisions_per_second": 2815.8158412915004,
+      "parameter_delta": 1.5477455854415894,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.375,
+          "mean_utility": -0.25,
+          "mean_decisions": 62.5
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.625,
+          "mean_utility": 0.25,
+          "mean_decisions": 70.0
+        }
+      },
+      "loss": 0.31575204626036185,
+      "policy_loss": -0.002082250682481875,
+      "value_loss": 0.6695068987707297,
+      "entropy": 1.6919150426983833,
+      "kl": 0.00040405545564681233,
+      "clip_fraction": 0.00016276041666666666,
+      "gradient_norm": 0.709041420991222
+    },
+    {
+      "update": 21,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1561,
+      "decisions": 2037,
+      "collection_seconds": 0.7071317918598652,
+      "decisions_per_second": 2880.6511366747877,
+      "parameter_delta": 1.6742730140686035,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.375,
+          "mean_utility": -0.25,
+          "mean_decisions": 62.5
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 67.25
+        }
+      },
+      "loss": 0.45871471670957714,
+      "policy_loss": 0.0006112845327991706,
+      "value_loss": 0.9513980253384664,
+      "entropy": 1.7595577881886408,
+      "kl": 0.00019024576977244578,
+      "clip_fraction": 0.0,
+      "gradient_norm": 0.8805182387049382
+    },
+    {
+      "update": 22,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1406,
+      "decisions": 2049,
+      "collection_seconds": 0.7820763329509646,
+      "decisions_per_second": 2619.9488639026113,
+      "parameter_delta": 1.3384785652160645,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.125,
+          "mean_utility": -0.75,
+          "mean_decisions": 64.5
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.5,
+          "mean_utility": 0.0,
+          "mean_decisions": 66.375
+        }
+      },
+      "loss": 0.39575276303697715,
+      "policy_loss": -0.0008263204416090792,
+      "value_loss": 0.8289649025960402,
+      "entropy": 1.7903368120843715,
+      "kl": 0.00026234518868891013,
+      "clip_fraction": 0.0003551136363636364,
+      "gradient_norm": 1.0202981978654861
+    },
+    {
+      "update": 23,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1501,
+      "decisions": 2034,
+      "collection_seconds": 0.7007158750202507,
+      "decisions_per_second": 2902.7457097945976,
+      "parameter_delta": 1.1508640050888062,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 64.5
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.625,
+          "mean_utility": 0.25,
+          "mean_decisions": 67.125
+        }
+      },
+      "loss": 0.47732462733983994,
+      "policy_loss": 0.0010695477249100804,
+      "value_loss": 0.989780530333519,
+      "entropy": 1.863518846531709,
+      "kl": 0.0018346142020770155,
+      "clip_fraction": 0.01637929833183686,
+      "gradient_norm": 1.230166497329871
+    },
+    {
+      "update": 24,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1525,
+      "decisions": 1991,
+      "collection_seconds": 0.6670306669548154,
+      "decisions_per_second": 2984.870259548157,
+      "parameter_delta": 1.4483156204223633,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 67.75
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 71.625
+        }
+      },
+      "loss": 0.36074331030249596,
+      "policy_loss": -0.0017715405362347763,
+      "value_loss": 0.7612842277934154,
+      "entropy": 1.8127265324195225,
+      "kl": 0.00040626966040235857,
+      "clip_fraction": 0.001154625186851869,
+      "gradient_norm": 0.5949366887410482
+    },
+    {
+      "update": 25,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1328,
+      "decisions": 2023,
+      "collection_seconds": 0.8059031669981778,
+      "decisions_per_second": 2510.227137504938,
+      "parameter_delta": 1.1817514896392822,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.5,
+          "mean_utility": 0.0,
+          "mean_decisions": 65.75
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 65.25
+        }
+      },
+      "loss": 0.3614707659421997,
+      "policy_loss": 0.003669126509604129,
+      "value_loss": 0.7507210048762235,
+      "entropy": 1.7558861645785244,
+      "kl": 0.0003339696790424734,
+      "clip_fraction": 0.0006510416807776147,
+      "gradient_norm": 1.0054498233578422
+    },
+    {
+      "update": 26,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1536,
+      "decisions": 2054,
+      "collection_seconds": 0.7429229160770774,
+      "decisions_per_second": 2764.755206160446,
+      "parameter_delta": 1.3014622926712036,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 66.625
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.625,
+          "mean_utility": 0.25,
+          "mean_decisions": 70.25
+        }
+      },
+      "loss": 0.4279486558710535,
+      "policy_loss": -0.0012218819853539269,
+      "value_loss": 0.8943389896303415,
+      "entropy": 1.7998958006501198,
+      "kl": 0.0003593985125007748,
+      "clip_fraction": 0.00016276041666666666,
+      "gradient_norm": 1.0113060126701992
+    },
+    {
+      "update": 27,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1729,
+      "decisions": 2077,
+      "collection_seconds": 0.7246669169981033,
+      "decisions_per_second": 2866.1443640947064,
+      "parameter_delta": 1.5196179151535034,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.375,
+          "mean_utility": -0.25,
+          "mean_decisions": 64.75
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.5,
+          "mean_utility": 0.0,
+          "mean_decisions": 67.25
+        }
+      },
+      "loss": 0.42311705223151613,
+      "policy_loss": -0.00014102622766845992,
+      "value_loss": 0.882330450628485,
+      "entropy": 1.7907148131302424,
+      "kl": 0.001149782245582693,
+      "clip_fraction": 0.011413976683148317,
+      "gradient_norm": 0.7097523286938667
+    },
+    {
+      "update": 28,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1483,
+      "decisions": 2019,
+      "collection_seconds": 0.7289678328670561,
+      "decisions_per_second": 2769.669536801373,
+      "parameter_delta": 1.351223349571228,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.5,
+          "mean_utility": 0.0,
+          "mean_decisions": 65.25
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 69.25
+        }
+      },
+      "loss": 0.3314454626912872,
+      "policy_loss": -0.0035005458048544824,
+      "value_loss": 0.7032082074632248,
+      "entropy": 1.6658097878098488,
+      "kl": 0.001526186734433092,
+      "clip_fraction": 0.022682291610787313,
+      "gradient_norm": 0.6680772559096416
+    },
+    {
+      "update": 29,
+      "episodes": 32,
+      "completed": 31,
+      "truncated": 1,
+      "samples": 1467,
+      "decisions": 2012,
+      "collection_seconds": 0.6848736670799553,
+      "decisions_per_second": 2937.768082949391,
+      "parameter_delta": 1.4492210149765015,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.125,
+          "mean_utility": -0.75,
+          "mean_decisions": 64.125
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 1.0,
+          "mean_utility": 1.0,
+          "mean_decisions": 66.875
+        }
+      },
+      "loss": 0.5403109674031535,
+      "policy_loss": -0.004320158448535949,
+      "value_loss": 1.1219143743316333,
+      "entropy": 1.632606181005637,
+      "kl": 0.000427783066925258,
+      "clip_fraction": 0.0014924302619571488,
+      "gradient_norm": 0.951607363919417
+    },
+    {
+      "update": 30,
+      "episodes": 32,
+      "completed": 31,
+      "truncated": 1,
+      "samples": 1504,
+      "decisions": 1956,
+      "collection_seconds": 0.6682677089702338,
+      "decisions_per_second": 2926.9706941460563,
+      "parameter_delta": 1.2079716920852661,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.5,
+          "mean_utility": 0.0,
+          "mean_decisions": 64.5
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.5,
+          "mean_utility": 0.0,
+          "mean_decisions": 67.75
+        }
+      },
+      "loss": 0.505234630467991,
+      "policy_loss": -0.0010465301068810124,
+      "value_loss": 1.04641417786479,
+      "entropy": 1.6925930753350258,
+      "kl": 0.0013417585118986608,
+      "clip_fraction": 0.015353732645356407,
+      "gradient_norm": 0.7686202209442854
+    },
+    {
+      "update": 31,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1546,
+      "decisions": 2049,
+      "collection_seconds": 0.7702366660814732,
+      "decisions_per_second": 2660.2213192785907,
+      "parameter_delta": 1.4412351846694946,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 66.125
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 67.75
+        }
+      },
+      "loss": 0.37217714379613215,
+      "policy_loss": -0.009176800206590157,
+      "value_loss": 0.7964385220637689,
+      "entropy": 1.6865320526636565,
+      "kl": 0.002205584371600148,
+      "clip_fraction": 0.027463942336348388,
+      "gradient_norm": 0.6584529922558711
+    },
+    {
+      "update": 32,
+      "episodes": 32,
+      "completed": 31,
+      "truncated": 1,
+      "samples": 1388,
+      "decisions": 2029,
+      "collection_seconds": 0.678944000042975,
+      "decisions_per_second": 2988.4644387041803,
+      "parameter_delta": 1.4726437330245972,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 66.125
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.625,
+          "mean_utility": 0.25,
+          "mean_decisions": 64.875
+        }
+      },
+      "loss": 0.41188098151575436,
+      "policy_loss": -7.635809015482664e-05,
+      "value_loss": 0.8570266352458433,
+      "entropy": 1.655597759918733,
+      "kl": 0.0006752466440296055,
+      "clip_fraction": 0.002551557242193005,
+      "gradient_norm": 0.7619735097343271
+    },
+    {
+      "update": 33,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1536,
+      "decisions": 2047,
+      "collection_seconds": 0.6973252089228481,
+      "decisions_per_second": 2935.502651857348,
+      "parameter_delta": 1.4998633861541748,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.375,
+          "mean_utility": -0.25,
+          "mean_decisions": 63.75
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 67.125
+        }
+      },
+      "loss": 0.42889913606146973,
+      "policy_loss": -0.0013135694510613878,
+      "value_loss": 0.8925984998544058,
+      "entropy": 1.608654464284579,
+      "kl": 0.0006645853415344997,
+      "clip_fraction": 0.006998697916666667,
+      "gradient_norm": 0.6701905118922392
+    },
+    {
+      "update": 34,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1506,
+      "decisions": 1982,
+      "collection_seconds": 0.7912361251655966,
+      "decisions_per_second": 2504.941239361626,
+      "parameter_delta": 1.6078232526779175,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 65.0
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.625,
+          "mean_utility": 0.25,
+          "mean_decisions": 68.25
+        }
+      },
+      "loss": 0.42854576744139194,
+      "policy_loss": -0.0009964132914319634,
+      "value_loss": 0.892221332838138,
+      "entropy": 1.656848520040512,
+      "kl": 0.0003958495165458468,
+      "clip_fraction": 0.0023782950593158603,
+      "gradient_norm": 0.7288783080875874
+    },
+    {
+      "update": 35,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1670,
+      "decisions": 2043,
+      "collection_seconds": 0.6789657911285758,
+      "decisions_per_second": 3008.9881208950583,
+      "parameter_delta": 1.5028971433639526,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.375,
+          "mean_utility": -0.25,
+          "mean_decisions": 66.5
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.875,
+          "mean_utility": 0.75,
+          "mean_decisions": 65.625
+        }
+      },
+      "loss": 0.4160695991345814,
+      "policy_loss": 0.0202822645577336,
+      "value_loss": 0.8231253730399268,
+      "entropy": 1.5775346819843565,
+      "kl": 0.0006190572107698245,
+      "clip_fraction": 0.0018136160714285715,
+      "gradient_norm": 0.9589062806751046
+    },
+    {
+      "update": 36,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1448,
+      "decisions": 2020,
+      "collection_seconds": 0.6646489161066711,
+      "decisions_per_second": 3039.1985167637067,
+      "parameter_delta": 1.284927248954773,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.375,
+          "mean_utility": -0.25,
+          "mean_decisions": 65.375
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 65.375
+        }
+      },
+      "loss": 0.3584571061655879,
+      "policy_loss": -0.0018314839787005137,
+      "value_loss": 0.7519523656616608,
+      "entropy": 1.5687594811121623,
+      "kl": 0.0001461874217056902,
+      "clip_fraction": 0.0,
+      "gradient_norm": 0.7391089821855227
+    },
+    {
+      "update": 37,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1649,
+      "decisions": 2038,
+      "collection_seconds": 0.7856485841330141,
+      "decisions_per_second": 2594.0350955370104,
+      "parameter_delta": 1.548416018486023,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.5,
+          "mean_utility": 0.0,
+          "mean_decisions": 68.875
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.875,
+          "mean_utility": 0.75,
+          "mean_decisions": 66.625
+        }
+      },
+      "loss": 0.5106714640099269,
+      "policy_loss": 0.00013320970062453014,
+      "value_loss": 1.0525476737664297,
+      "entropy": 1.5735586560689485,
+      "kl": 0.0001476780791843059,
+      "clip_fraction": 0.0,
+      "gradient_norm": 0.8302719403917973
+    },
+    {
+      "update": 38,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1582,
+      "decisions": 2052,
+      "collection_seconds": 0.7089449169579893,
+      "decisions_per_second": 2894.4420799360882,
+      "parameter_delta": 1.6061105728149414,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.375,
+          "mean_utility": -0.25,
+          "mean_decisions": 66.0
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.375,
+          "mean_utility": -0.25,
+          "mean_decisions": 67.625
+        }
+      },
+      "loss": 0.30726197825816387,
+      "policy_loss": -0.004548486107243941,
+      "value_loss": 0.6554012877436785,
+      "entropy": 1.58901813855538,
+      "kl": 0.000606959580741554,
+      "clip_fraction": 0.0034228679007635666,
+      "gradient_norm": 0.610078914807393
+    },
+    {
+      "update": 39,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1579,
+      "decisions": 2028,
+      "collection_seconds": 0.6745391660369933,
+      "decisions_per_second": 3006.497031024556,
+      "parameter_delta": 1.4387075901031494,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.125,
+          "mean_utility": -0.75,
+          "mean_decisions": 66.625
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 66.5
+        }
+      },
+      "loss": 0.3923193310888914,
+      "policy_loss": 0.0017928701664249485,
+      "value_loss": 0.8127580497127312,
+      "entropy": 1.5852565925854902,
+      "kl": 0.0008174759655748159,
+      "clip_fraction": 0.006296120297450285,
+      "gradient_norm": 0.9273822668653268
+    },
+    {
+      "update": 40,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1591,
+      "decisions": 2036,
+      "collection_seconds": 0.7306677079759538,
+      "decisions_per_second": 2786.4923791965425,
+      "parameter_delta": 1.4487297534942627,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.125,
+          "mean_utility": -0.75,
+          "mean_decisions": 67.625
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.625,
+          "mean_utility": 0.25,
+          "mean_decisions": 66.25
+        }
+      },
+      "loss": 0.40857849914867145,
+      "policy_loss": 0.0035913679032371594,
+      "value_loss": 0.841406354537377,
+      "entropy": 1.5716044719402606,
+      "kl": 0.00018922540997524405,
+      "clip_fraction": 0.0,
+      "gradient_norm": 0.7704643555558645
+    },
+    {
+      "update": 41,
+      "episodes": 32,
+      "completed": 31,
+      "truncated": 1,
+      "samples": 1698,
+      "decisions": 2017,
+      "collection_seconds": 0.6622942499816418,
+      "decisions_per_second": 3045.47412280253,
+      "parameter_delta": 1.3115884065628052,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.25,
+          "mean_utility": -0.5,
+          "mean_decisions": 69.0
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 1.0,
+          "mean_utility": 1.0,
+          "mean_decisions": 67.75
+        }
+      },
+      "loss": 0.4744528941810131,
+      "policy_loss": 0.004833309445530176,
+      "value_loss": 0.9690573758312634,
+      "entropy": 1.4909101916210992,
+      "kl": 0.0013479021064150792,
+      "clip_fraction": 0.014336594014561601,
+      "gradient_norm": 0.8779181247310979
+    },
+    {
+      "update": 42,
+      "episodes": 32,
+      "completed": 32,
+      "truncated": 0,
+      "samples": 1494,
+      "decisions": 1990,
+      "collection_seconds": 0.753579166950658,
+      "decisions_per_second": 2640.731176330806,
+      "parameter_delta": 1.2484811544418335,
+      "evaluation": {
+        "greedy": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.125,
+          "mean_utility": -0.75,
+          "mean_decisions": 62.125
+        },
+        "initial": {
+          "games": 8,
+          "completed": 8,
+          "truncated": 0,
+          "win_share": 0.75,
+          "mean_utility": 0.5,
+          "mean_decisions": 72.0
+        }
+      },
+      "loss": 0.35448609851300716,
+      "policy_loss": -0.0031283030402846634,
+      "value_loss": 0.7442688873658577,
+      "entropy": 1.4520043854912121,
+      "kl": 0.0014290106236861295,
+      "clip_fraction": 0.016590207116678357,
+      "gradient_norm": 0.6680431750913461
+    }
+  ]
+}

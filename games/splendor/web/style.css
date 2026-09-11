@@ -675,3 +675,5 @@ label select {
 .owned-nobles:not(:empty) { margin-top:10px; }
 .owned-nobles-label { font-size:12px; color:var(--gold); }
 .player .owned-nobles .noble-card { width:58px; padding:0; }
+
+.lab-link { display:inline-flex; align-items:center; padding:9px 12px; border:1px solid #78928c; border-radius:6px; text-decoration:none; white-space:nowrap; }
