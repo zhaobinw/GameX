@@ -631,3 +631,42 @@ label select {
     grid-template-columns:repeat(3,minmax(0,1fr));
   }
 }
+
+/* Desktop: keep original portrait cards, with guidance beside each card. */
+@media(min-width:1100px) {
+  header,main,footer { max-width:1800px; }
+  header { padding:14px 24px 10px; }
+  main { padding:0 24px; }
+  header p { margin-top:2px; }
+  .layout { grid-template-columns:minmax(0,1fr) 250px; gap:18px; }
+  .market-guide-note { margin-bottom:8px; font-size:13px; }
+  .nobles { min-height:0; height:66px; margin-bottom:12px; gap:12px; }
+  .noble-card { width:66px; }
+  .market-row { max-width:none; grid-template-columns:52px repeat(4,minmax(0,1fr)); gap:10px; margin-bottom:10px; align-items:stretch; }
+  .market-row .development-wrap { display:grid; grid-template-columns:minmax(64px,0.9fr) minmax(80px,1fr); gap:6px; align-items:center; }
+  .market-row .development { width:100%; height:auto; max-height:154px; aspect-ratio:215/300; }
+  .market-row .card-guide { min-height:0; height:100%; justify-content:center; padding:6px; gap:4px; font-size:12px; }
+  .market-row .effective-cost { gap:4px; }
+  .market-row .chip { min-width:21px; padding:1px 3px; font-size:12px; }
+  .market-row .empty-card { max-height:154px; }
+  .deck { min-height:100px; padding:5px 3px; gap:6px; }
+  .deck strong { font-size:23px; }
+  .deck span { font-size:12px; }
+  .side { padding:14px; }
+  .side h2 { margin-bottom:8px; }
+  .side .hint { font-size:12px; margin:8px 0; }
+  .bank { gap:6px; margin:8px 0; }
+  .gem-button img { width:42px; height:42px; }
+  .gem-button span { font-size:12px; }
+  .actions button { font-size:14px; padding:8px; }
+  .players { margin:6px 0 12px; gap:10px; }
+  .player { padding:10px 12px; }
+  .player-head { margin-bottom:4px; }
+  .token-summary { margin:4px 0 6px; }
+  .token-summary strong { font-size:21px; }
+  .token-line { margin:5px 0; }
+  .reserve-row .development-wrap { width:200px; flex-direction:row; align-items:center; }
+  .reserve-row .card-guide { flex:1; min-height:85px; font-size:12px; padding:5px; }
+  .reserve-row .development { flex:none; }
+  footer { padding:12px 24px; }
+}
