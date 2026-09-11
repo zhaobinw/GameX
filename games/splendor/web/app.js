@@ -73,7 +73,7 @@ function render() {
     <div class="actions"><button id="confirm-tokens" class="primary" ${matchingSelection() ? '' : 'disabled'}>${returning ? '确认归还筹码' : '拿取筹码'}</button><button id="clear-tokens">清空选择</button></div>${pendingTake ? '<button id="cancel-take" class="cancel-take">取消本次拿取，改选行动</button>' : ''}
     <p class="hint">${state.phase === 'noble' ? '点击上方高亮的贵族。一次回合只能获得一位。' : '点击发展卡购买或预留；点击左侧牌堆可暗抽预留。'}</p><p class="hint">持有 ${sum(current.tokens)} / 10 枚 · 预留 ${current.reserved.length} / 3 张</p>
   </aside></div>
-  <section class="players" style="--players:${state.players.length}" aria-label="玩家区域">${state.players.map(p => `<article class="player ${p.id === state.currentPlayer ? 'active' : ''}"><div class="player-head"><strong>玩家 ${p.id + 1}${p.id === state.firstPlayer ? ' · 先手' : ''}</strong><span class="points">${p.score} 分</span></div>${playerTokenSummary(p)}<div class="token-line">筹码 ${chips(p.tokens)}</div><div class="token-line">折扣 ${chips(p.bonuses)}</div><button data-player="${p.id}">已购 ${p.purchased.length} 张 · 贵族 ${p.nobles.length} 位</button><div class="reserve-row">${p.reserved.map(id => id ? cardButton(id, true) : '<div class="hidden-card">预留暗牌</div>').join('')}</div></article>`).join('')}</section>
+  <section class="players" style="--players:${state.players.length}" aria-label="玩家区域">${state.players.map(p => `<article class="player ${p.id === state.currentPlayer ? 'active' : ''}"><div class="player-head"><strong>玩家 ${p.id + 1}${p.id === state.firstPlayer ? ' · 先手' : ''}</strong><span class="points">${p.score} 分</span></div>${playerTokenSummary(p)}<div class="token-line">筹码 ${chips(p.tokens)}</div><div class="token-line">折扣 ${chips(p.bonuses)}</div><button data-player="${p.id}">已购 ${p.purchased.length} 张 · 贵族 ${p.nobles.length} 位</button><div class="owned-nobles" aria-label="玩家 ${p.id + 1} 已获得的贵族">${p.nobles.length ? `<span class="owned-nobles-label">已获贵族 · ${p.nobles.length * 3} 分</span>${p.nobles.map(id => `<button class="noble-card" data-noble="${id}" aria-label="玩家 ${p.id + 1} 已获贵族，3分，要求${tokenText(getNoble(id).cost)}"><img src="${getNoble(id).image}" alt="已获贵族：${tokenText(getNoble(id).cost)}"></button>`).join('')}` : ''}</div><div class="reserve-row">${p.reserved.map(id => id ? cardButton(id, true) : '<div class="hidden-card">预留暗牌</div>').join('')}</div></article>`).join('')}</section>
   <details class="history"><summary>对局记录 · 已完成 ${Math.min(...state.players.map(p => p.turns))} 轮</summary><ol>${state.log.map(logText).filter(Boolean).map(text => `<li>${esc(text)}</li>`).join('')}</ol></details>`;
   document.querySelectorAll('[data-card]').forEach(el => el.onclick = () => showCard(el.dataset.card));
   document.querySelectorAll('[data-tier]').forEach(el => el.onclick = () => reserveDeck(Number(el.dataset.tier)));
@@ -175,7 +175,8 @@ function reserveDeck(tier) {
 }
 function showNoble(id) {
   const n = getNoble(id), action = actions.find(a => a.type === 'noble' && a.noble === id);
-  openModal(`<div class="card-detail"><img src="${n.image}" alt="贵族"><div><h2>贵族 · 3 声望</h2><p>需要已购发展卡提供以下折扣，不消耗卡牌或筹码。</p><div class="payment">${chips(n.cost)}</div>${action ? '<button id="choose-noble" class="primary">选择这位贵族</button>' : ''}</div></div>`);
+  const owner = state.players.find(p => p.nobles.includes(id));
+  openModal(`<div class="card-detail"><img src="${n.image}" alt="贵族"><div><h2>贵族 · 3 声望</h2>${owner ? `<p class="purchase-status">已由玩家 ${owner.id + 1} 获得 · 3 分已计入总分</p>` : '<p>回合结束时满足条件自动到访；满足多位时选择一位，每回合最多一位。</p>'}<p>需要已购发展卡提供以下折扣，不消耗卡牌或筹码。</p><div class="payment">${chips(n.cost)}</div>${action ? '<button id="choose-noble" class="primary">选择这位贵族</button>' : ''}</div></div>`);
   if (action) $('#choose-noble').onclick = () => move(action);
 }
 function showPlayer(id) {

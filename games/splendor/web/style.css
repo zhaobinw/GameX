@@ -671,3 +671,7 @@ label select {
   footer { padding:12px 24px; }
 }
 .cancel-take { width:100%; margin-top:10px; font-size:14px; color:#f0d497; }
+.owned-nobles { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+.owned-nobles:not(:empty) { margin-top:10px; }
+.owned-nobles-label { font-size:12px; color:var(--gold); }
+.player .owned-nobles .noble-card { width:58px; padding:0; }
